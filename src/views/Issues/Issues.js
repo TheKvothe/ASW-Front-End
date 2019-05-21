@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
-//import {palabraService} from '../../_services/palabra.service';
+import {issueService} from '../../_services/issue.service';
 
 const WelcStyle = {
     fontSize: '30px',
@@ -9,27 +9,24 @@ const WelcStyle = {
 };
 
 
-class Home extends Component {
+class Issues extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categorias: [],
-            temas: [],
-            palabras: [],
-        }
+            issues: [],
+        };
     }
 
     componentDidMount(){
-        //this.GetData();
+        this.GetData();
     }
 
-    /*GetData(){
-        palabraService.getAll()
+    GetData(){
+        issueService.getAll()
             .then(data => {
-                const palabras = data;
-                this.setState({palabras});
+                this.setState({issues: data});
             });
-    }*/
+    }
 
     render() {
         return(
@@ -37,9 +34,16 @@ class Home extends Component {
                 <Grid item xs={12}>
                     <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
                 </Grid>
+                <Grid item xs={4}>
+                    {
+                        this.state.issues.map((issue, key) =>
+                            <p>{issue.id}</p>
+                        )
+                    }
+                </Grid>
             </Grid>
         );
     }
 }
 
-export default Home;
+export default Issues;
