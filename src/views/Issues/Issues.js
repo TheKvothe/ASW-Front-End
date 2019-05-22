@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
+import EnhancedTable from '../../components/IssuesTable/IssuesTable'
 
 const WelcStyle = {
     fontSize: '30px',
@@ -30,18 +31,16 @@ class Issues extends Component {
 
     render() {
         return(
-            <Grid container justify={"center"} spacing={40}>
-                <Grid item xs={12}>
-                    <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
+            <div>
+                <Grid container justify={"center"} spacing={40}>
+                    <Grid item xs={12}>
+                        <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <EnhancedTable/>
+                    </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                    {
-                        this.state.issues.map((issue, key) =>
-                            <p>{issue.id}</p>
-                        )
-                    }
-                </Grid>
-            </Grid>
+            </div>
         );
     }
 }

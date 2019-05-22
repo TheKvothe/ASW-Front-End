@@ -29,20 +29,6 @@ class Header extends Component{
             Drawer_left:false,
             Titulo: 'App',
         };
-        this.OpenDrawer = this.OpenDrawer.bind(this);
-        this.CloseDrawer = this.CloseDrawer.bind(this);
-    }
-
-    OpenDrawer(){
-        this.setState({
-            Drawer_left:true
-        });
-    }
-
-    CloseDrawer(){
-        this.setState({
-            Drawer_left:false
-        });
     }
 
     render(){
