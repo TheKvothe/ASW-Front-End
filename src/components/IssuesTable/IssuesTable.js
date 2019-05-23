@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Link from "react-router-dom/es/Link";
+import {Link} from "react-router-dom";
 import {issueService} from '../../_services/issue.service'
 
 import Table from '@material-ui/core/Table';
@@ -23,16 +23,14 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import classNames from 'classnames';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/es/Button";
-
 
 
 
 let counter = 0;
 
-function createData(title, type, status, priority) {
+function createData(title, type, status, priority, issueID) {
     counter += 1;
-    return { id: counter, title, type, status, priority};
+    return { id: counter, title, type, status, priority, issueID};
 }
 
 function desc(a, b, orderBy) {
@@ -212,11 +210,6 @@ const styles = theme => ({
     },
 });
 
-const CreateButtonStyle = {
-    margin: 'auto',
-    marginTop: '10px',
-    display: 'block',
-};
 
 class EnhancedTable extends React.Component {
     constructor(props){
@@ -240,7 +233,7 @@ class EnhancedTable extends React.Component {
             issues.then( datos => {
             let data = [];
             datos.forEach( issue => {
-                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority))
+                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id))
             });
             this.setState({data});
         });
@@ -337,10 +330,10 @@ class EnhancedTable extends React.Component {
                                                 <TableCell component="th" scope="row" padding="none">
                                                     {n.title}
                                                 </TableCell>
-                                                <TableCell>{n.type}</TableCell>
+                                                <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.type + '.svg'} alt={n.type}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
-                                                <TableCell>{n.priority}</TableCell>
-                                                <TableCell><Link to={'/palabra/' + n.idpalabra}><button>editar</button></Link></TableCell>
+                                                <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
+                                                <TableCell><Link to={'/issues/' + n.issueID + '/edit'}><button>editar</button></Link></TableCell>
                                             </TableRow>
                                         );
                                     })}
