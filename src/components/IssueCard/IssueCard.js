@@ -6,6 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {issueService} from "../../_services/issue.service";
 
 const styles = {
     card: {
@@ -30,40 +31,110 @@ class SimpleCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-
+            id: "",
+            title: "",
+            description: "",
+            type_issue: "",
+            priority: "",
+            status: "",
+            votes: "",
+            watches: "",
+            creator_id: "",
+            assignee_id: "",
+            created_at: "",
+            updated_at: "",
+            voters: "",
+            watchers: "",
+            _links:""
         }
     };
+
+    componentDidMount(){
+        this.GetData();
+    }
+
+    GetData(){
+        issueService.getByID(this.props.id)
+            .then(data => {
+
+                this.setState({
+                    id: data.id,
+                    title: data.title,
+                    description: data.description,
+                    type_issue: data.type_issue,
+                    priority: data.priority,
+                    status: data.status,
+                    votes: data.votes,
+                    watches: data.watches,
+                    creator_id: data.creator_id,
+                    assignee_id: data.assignee_id,
+                    created_at: data.creator_id,
+                    updated_at: data.updated_at,
+                    voters: data.voters,
+                    watchers: data.watchers,
+                    _links: data._links
+                });
+
+            });
+    }
+
+    vote(id) {
+        console.log('Vote ID is:', id);
+        issueService.vote(id);
+    }
+
+    unvote(id) {
+        console.log('Unvote ID is:', id);
+        issueService.unvote(id);
+    }
+
+    watch(id) {
+        console.log('Watch ID is:', id);
+        issueService.watch(id);
+    }
+
+    unwatch(id) {
+        console.log('Unwatch ID is:', id);
+        issueService.unwatch(id);
+    }
+
+
     render()
     {
+        let button_v;
+
+        if (true) {
+            button_v = <Button onClick={this.vote(this.state.id)} size="small"> Vote this issue </Button>;
+        } else {
+            button_v = <Button onClick={this.unvote(this.state.id)} size="small"> Unvote this issue </Button>;
+        }
+
+        let button_w;
+
+        if (true) {
+            button_w = <Button onClick={this.watch(this.state.id)} size="small"> Watch this issue</Button>;
+        } else {
+            button_w = <Button onClick={this.unwatch(this.state.id)} size="small">Unwatch this issue</Button>;
+        }
+
+
         return (
             <Card >
                 <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                        Word of the Day
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-
-                    </Typography>
-                    <Typography  color="textSecondary">
-                        adjective
-                    </Typography>
-                    <Typography component="p">
-                         Assignee: {this.props.issue.assignee_id}
+                    <Typography align={"left"} component="p">
+                        <b> Assignee: </b> {this.state.assignee_id}
                         <br/>
-                        Type: {this.props.issue.type_issue}
+                        <b> Type: </b> {this.state.type_issue}
                         <br/>
-                        Priority: {this.props.issue.priority}
+                        <b> Priority: </b> {this.state.priority}
                         <br/>
-                        Status: {this.props.issue.status}
+                        <b> Status: </b> {this.state.status}
                         <br/>
-                        Votes: {this.props.issue.votes}
+                        <b> Votes: </b> {this.state.votes} {button_v}
                         <br/>
-                        Watchers: {this.props.issue.watches}
+                        <b>  Watchers: </b> {this.state.watches} {button_w}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
             </Card>
         );
     }

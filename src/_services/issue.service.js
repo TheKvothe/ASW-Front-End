@@ -15,7 +15,36 @@ export const issueService = {
     post,
     update,
     destroy,
+    vote,
+    unvote,
+    watch,
+    unwatch
 };
+
+// POST issues/:id/vote
+function vote(id) {
+    return axios.post(URI + '/issues/' + id + '/vote', {}, requestOptions)
+        .then(handleResponse);
+}
+
+// POST issues/:id/unvote
+function unvote(id) {
+    return axios.post(URI + '/issues/' + id + '/unvote', {}, requestOptions)
+        .then(handleResponse);
+}
+
+// POST /issues/:id/watch
+function watch(id) {
+    return axios.post(URI + '/issues/' + id + '/watch', {}, requestOptions)
+        .then(handleResponse);
+}
+
+// POST /issues/:id/watch
+function unwatch(id) {
+    return axios.post(URI + '/issues/' + id + '/unwatch', {}, requestOptions)
+        .then(handleResponse);
+}
+
 
 function getAll() {
     return axios.get(URI + '/issues',requestOptions)

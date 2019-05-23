@@ -9,6 +9,20 @@ const WelcStyle = {
     marginTop: '15px',
 };
 
+const TitleStyle = {
+    fontSize: '30px',
+    textAlign: 'center',
+    marginTop: '15px',
+    marginLeft: '15px',
+};
+
+const IssueStyle = {
+    fontSize: '15px',
+    textAlign: 'left',
+    marginTop: '5px',
+    marginLeft: '15px',
+};
+
 
 class Issue extends Component {
     constructor(props) {
@@ -50,7 +64,7 @@ class Issue extends Component {
                     watches: data.watches,
                     creator_id: data.creator_id,
                     assignee_id: data.assignee_id,
-                    created_at: data.creator_id,
+                    created_at: data.created_at,
                     updated_at: data.updated_at,
                     voters: data.voters,
                     watchers: data.watchers,
@@ -61,15 +75,45 @@ class Issue extends Component {
     }
 
     render() {
+        let data = this.state.created_at.substring(0, 10);
         return(
             <div>
                 <Grid container justify={"center"} spacing={40}>
                     <Grid item xs={12}>
                         <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
                     </Grid>
-                    <Grid item xs={12}>
-                        <SimpleCard issue={this.state}/>
-                    </Grid>
+                </Grid>
+                <Grid container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center">
+                    <p style={TitleStyle} align="left"><b>{this.state.title}</b></p>
+                </Grid>
+                <Grid container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center">
+                    <p style={IssueStyle} size="small" align="left"><b> Issue #{this.state.id}</b></p>
+                    <p style={IssueStyle} size="small" align="left"><b>{this.state.status}</b></p>
+                </Grid>
+                <Grid container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center">
+                    <p style={IssueStyle} size="small" align="left"><b>{this.state.creator_id}</b></p>
+                    <p style={IssueStyle} size="small" align="left"><b> created an issue {data} </b></p>
+                </Grid>
+                <Grid container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="center">
+                    <p style={IssueStyle} size="small" align="left"><b>{this.state.description}</b></p>
+                </Grid>
+                <Grid container
+                      direction="row"
+                      justify="flex-end"
+                      alignItems="center" >
+                    <SimpleCard id={this.state.id}/>
                 </Grid>
             </div>
         );
