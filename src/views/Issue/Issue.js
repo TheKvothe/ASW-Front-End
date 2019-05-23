@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
 import SimpleCard from '../../components/IssueCard/IssueCard';
+import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
 
 const WelcStyle = {
     fontSize: '30px',
@@ -68,6 +69,7 @@ class Issue extends Component {
                         <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
                     </Grid>
                     <Grid item xs={12}>
+                        <SimpleSelect id={this.state.id}/>
                         <SimpleCard issue={this.state}/>
                     </Grid>
                 </Grid>
