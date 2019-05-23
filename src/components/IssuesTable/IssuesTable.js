@@ -30,9 +30,9 @@ import Button from "@material-ui/core/es/Button";
 
 let counter = 0;
 
-function createData(title, type, status) {
+function createData(title, type, status, priority) {
     counter += 1;
-    return { id: counter, title, type, status};
+    return { id: counter, title, type, status, priority};
 }
 
 function desc(a, b, orderBy) {
@@ -64,6 +64,7 @@ const rows = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
     { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
     { id: 'status', numeric: false, disablePadding: false, label: 'Status'},
+    { id: 'priority', numeric: false, disablePadding: false, label: 'Priority' },
     { id: 'spaceForEditImage', numeric: false, disablePadding: false, label: ''}, //espacio para que la linea de la cabecera cubra todo
 ];
 
@@ -239,7 +240,7 @@ class EnhancedTable extends React.Component {
             issues.then( datos => {
             let data = [];
             datos.forEach( issue => {
-                data.push(createData(issue.title, issue.type_issue, issue.status))
+                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority))
             });
             this.setState({data});
         });
@@ -338,6 +339,7 @@ class EnhancedTable extends React.Component {
                                                 </TableCell>
                                                 <TableCell>{n.type}</TableCell>
                                                 <TableCell>{n.status}</TableCell>
+                                                <TableCell>{n.priority}</TableCell>
                                                 <TableCell><Link to={'/palabra/' + n.idpalabra}><button>editar</button></Link></TableCell>
                                             </TableRow>
                                         );
