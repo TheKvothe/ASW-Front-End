@@ -1,13 +1,8 @@
 import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
-import SimpleCard from '../../components/IssueCard/IssueCard';
+import IssueCard from '../../components/IssueCard/IssueCard';
 
-const WelcStyle = {
-    fontSize: '30px',
-    textAlign: 'center',
-    marginTop: '15px',
-};
 
 const TitleStyle = {
     fontSize: '30px',
@@ -78,11 +73,6 @@ class Issue extends Component {
         let data = this.state.created_at.substring(0, 10);
         return(
             <div>
-                <Grid container justify={"center"} spacing={40}>
-                    <Grid item xs={12}>
-                        <p style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p>
-                    </Grid>
-                </Grid>
                 <Grid container
                       direction="row"
                       justify="flex-start"
@@ -113,7 +103,7 @@ class Issue extends Component {
                       direction="row"
                       justify="flex-end"
                       alignItems="center" >
-                    <SimpleCard id={this.state.id}/>
+                    <IssueCard id={this.state.id}/>
                 </Grid>
             </div>
         );

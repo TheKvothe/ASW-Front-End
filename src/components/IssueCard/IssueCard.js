@@ -25,7 +25,7 @@ const styles = {
     },
 };
 
-class SimpleCard extends Component {
+class IssueCard extends Component {
     //const { classes } = props;
     //const bull = <span className={classes.bullet}>•</span>;
     constructor(props){
@@ -57,6 +57,17 @@ class SimpleCard extends Component {
         issueService.getByID(this.props.id)
             .then(data => {
 
+                var voted = false;
+                var watched = false;
+                var it=0;
+                //Comprobar si el usuario ha votado/watcheado la issue  (comprobación hardcodeada con id=10)
+                for (it = 0; it < data.voters.length; ++it){
+                    if (data.voters[it][0][0] == '10') voted=true;
+                }
+                for (it = 0; it < data.watchers.length; ++it){
+                    if (data.voters[it][0][0] == '10') watched=true;
+                }
+
                 this.setState({
                     id: data.id,
                     title: data.title,
@@ -72,7 +83,10 @@ class SimpleCard extends Component {
                     updated_at: data.updated_at,
                     voters: data.voters,
                     watchers: data.watchers,
-                    _links: data._links
+                    _links: data._links,
+
+                    voted,
+                    watched,
                 });
 
             });
@@ -81,40 +95,51 @@ class SimpleCard extends Component {
     vote(id) {
         console.log('Vote ID is:', id);
         issueService.vote(id);
+        var votes = this.state.votes+ 1;
+        var voted = !this.state.voted;
+        this.setState({votes, voted})
     }
 
     unvote(id) {
         console.log('Unvote ID is:', id);
         issueService.unvote(id);
+        var votes = this.state.votes - 1;
+        var voted = !this.state.voted;
+        this.setState({votes, voted})
     }
 
     watch(id) {
         console.log('Watch ID is:', id);
         issueService.watch(id);
+        var watches = this.state.watches + 1;
+        var watched = !this.state.watched;
+        this.setState({watches, watched})
     }
 
     unwatch(id) {
         console.log('Unwatch ID is:', id);
         issueService.unwatch(id);
+        var watches = this.state.watches - 1;
+        var watched = !this.state.watched;
+        this.setState({watches, watched})
     }
 
 
     render()
     {
         let button_v;
-
-        if (true) {
-            button_v = <Button onClick={this.vote(this.state.id)} size="small"> Vote this issue </Button>;
+        if (!this.state.voted) {
+            button_v = <Button onClick={ () => this.vote(this.state.id)} size="small"> Vote this issue </Button>;
         } else {
-            button_v = <Button onClick={this.unvote(this.state.id)} size="small"> Unvote this issue </Button>;
+            button_v = <Button onClick={ () => this.unvote(this.state.id)} size="small"> Unvote this issue </Button>;
         }
 
         let button_w;
 
-        if (true) {
-            button_w = <Button onClick={this.watch(this.state.id)} size="small"> Watch this issue</Button>;
+        if (!this.state.watched) {
+            button_w = <Button onClick={ () => this.watch(this.state.id)} size="small"> Watch this issue</Button>;
         } else {
-            button_w = <Button onClick={this.unwatch(this.state.id)} size="small">Unwatch this issue</Button>;
+            button_w = <Button onClick={ () => this.unwatch(this.state.id)} size="small">Unwatch this issue</Button>;
         }
 
 
@@ -140,8 +165,8 @@ class SimpleCard extends Component {
     }
 }
 
-SimpleCard.propTypes = {
+IssueCard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleCard);
+export default withStyles(styles)(IssueCard);
