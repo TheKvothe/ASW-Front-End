@@ -56,7 +56,7 @@ class IssueCard extends Component {
             _links:"",
 
             assignee_name: " - ",
-            assignee_avatar: "",
+            assignee_avatar: null,
 
         }
     };
@@ -80,6 +80,11 @@ class IssueCard extends Component {
                     if (data.voters[it][0][0] == '10') watched=true;
                 }
 
+                var votes = 0;
+                if (data.votes != null) {
+                    votes=data.votes;
+                }
+
                 this.setState({
                     id: data.id,
                     title: data.title,
@@ -87,7 +92,7 @@ class IssueCard extends Component {
                     type_issue: data.type_issue,
                     priority: data.priority,
                     status: data.status,
-                    votes: data.votes,
+                    votes: votes,
                     watches: data.watches,
                     creator_id: data.creator_id,
                     assignee_id: data.assignee_id,
@@ -167,7 +172,7 @@ class IssueCard extends Component {
             <Card >
                 <CardContent>
                     <Typography align={"left"} component="p">
-                        <b> Assignee: </b> <img style={img} src={this.state.assignee_avatar} alt="avatar" /> {this.state.assignee_name}
+                        <b> Assignee: </b> <img style={img} src={this.state.assignee_avatar} alt=" " /> {this.state.assignee_name}
                         <br/>
                         <b> Type: </b> {this.state.type_issue}
                         <br/>

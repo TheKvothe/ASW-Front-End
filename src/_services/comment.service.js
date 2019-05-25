@@ -12,6 +12,9 @@ export const commentService = {
     getAll,
     getByID,
     getIssueComments,
+    destroy,
+    update,
+    post,
 };
 
 
@@ -30,6 +33,21 @@ function getIssueComments(issue_id){
         .then(handleResponse);
 }
 
+function destroy(id){
+    return axios.delete(URI + "/comments/" + id, requestOptions)
+        .then(handleResponse);
+}
+
+function update(id, new_text){
+    return axios.patch(URI + "/comment/" + id, {
+        "text": new_text
+    }, requestOptions).then(handleResponse);
+}
+
+function post(issue_id, comment_text) {
+    return axios.post(URI + "/issues/" + issue_id + '/comments', {
+        "text": comment_text}, requestOptions).then(handleResponse);
+}
 
 
 function handleResponse(response) {

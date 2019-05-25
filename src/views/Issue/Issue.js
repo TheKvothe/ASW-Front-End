@@ -6,6 +6,7 @@ import {userService} from "../../_services/user.service";
 import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
 
 import CommentList from "../../components/IssueComments/CommentList";
+import CommentForm from "../../components/IssueComments/CommentForm";
 import {commentService} from "../../_services/comment.service";
 
 const TitleStyle = {
@@ -29,15 +30,16 @@ const IssueDescStyle = {
     marginLeft: '100px',
 };
 
-const Line = {
-    borderBottomColor: 'black',
-    borderBottomWidth: '1',
-};
-
 const img = {
     marginLeft: '15px',
     borderRadius: '50%',
 };
+
+const Form = {
+    marginTop: '50px',
+    marginLeft: '25px',
+};
+
 
 
 class Issue extends Component {
@@ -76,7 +78,7 @@ class Issue extends Component {
         commentService.getIssueComments(this.state.id)
             .then(data => {
                 this.setState({
-                    
+                    comments: data
                 });
             });
     }
@@ -119,10 +121,6 @@ class Issue extends Component {
         return(
             <div>
                 <table width="100%">
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
                     <tr>
                         <td>
                             <Grid container
@@ -183,6 +181,11 @@ class Issue extends Component {
                     <CommentList
                         comments={this.state.comments}
                     />
+                </div>
+                <div style={Form}>
+                    <p align="left" >
+                    <CommentForm id={this.state.id}/>
+                    </p>
                 </div>
             </div>
         );
