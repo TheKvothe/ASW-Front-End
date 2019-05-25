@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {issueService} from "../../_services/issue.service";
+import {userService} from "../../_services/user.service";
 
 const styles = {
     card: {
@@ -23,6 +24,13 @@ const styles = {
     pos: {
         marginBottom: 12,
     },
+};
+
+const img = {
+    width: '18px',
+    height: '18px',
+    marginLeft: '10px',
+    borderRadius: '50%',
 };
 
 class IssueCard extends Component {
@@ -45,7 +53,11 @@ class IssueCard extends Component {
             updated_at: "",
             voters: "",
             watchers: "",
-            _links:""
+            _links:"",
+
+            assignee_name: " - ",
+            assignee_avatar: "",
+
         }
     };
 
@@ -88,6 +100,14 @@ class IssueCard extends Component {
                     voted,
                     watched,
                 });
+
+                userService.getByID(data.assignee_id)
+                    .then ( data => {
+                        this.setState({
+                            assignee_name: data.name,
+                            assignee_avatar: data.foto
+                        });
+                    });
 
             });
     }
@@ -147,7 +167,7 @@ class IssueCard extends Component {
             <Card >
                 <CardContent>
                     <Typography align={"left"} component="p">
-                        <b> Assignee: </b> {this.state.assignee_id}
+                        <b> Assignee: </b> <img style={img} src={this.state.assignee_avatar} alt="avatar" /> {this.state.assignee_name}
                         <br/>
                         <b> Type: </b> {this.state.type_issue}
                         <br/>
