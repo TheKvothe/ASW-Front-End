@@ -77,7 +77,7 @@ class IssueCard extends Component {
                     if (data.voters[it][0][0] == '10') voted=true;
                 }
                 for (it = 0; it < data.watchers.length; ++it){
-                    if (data.voters[it][0][0] == '10') watched=true;
+                    if (data.watchers[it][0][0] == '10') watched=true;
                 }
 
                 var votes = 0;

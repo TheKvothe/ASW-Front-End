@@ -9,6 +9,9 @@ import CommentList from "../../components/IssueComments/CommentList";
 import CommentForm from "../../components/IssueComments/CommentForm";
 import {commentService} from "../../_services/comment.service";
 
+import Button from '@material-ui/core/Button';
+//import Link from "react-router-dom";
+import Link from "react-router-dom/es/Link";
 const TitleStyle = {
     fontSize: '30px',
     textAlign: 'center',
@@ -22,6 +25,13 @@ const IssueStyle = {
     marginTop: '0px',
     marginLeft: '15px',
 };
+
+const ButtonStyle = {
+    marginTop: '20px',
+    marginBottom: '0px',
+    marginLeft: '10px',
+    marginRight: '10px',
+}
 
 const IssueDescStyle = {
     fontSize: '15px',
@@ -116,6 +126,15 @@ class Issue extends Component {
 
     }
 
+    deleteIssue(){
+        issueService.destroy(this.state.id);
+        this.props.history.push("/");
+    }
+
+    editIssue(){
+        this.props.history.push("/issues/" + this.state.id + "/edit")
+    }
+
     render() {
         let data = this.state.created_at.substring(0, 10);
         return(
@@ -172,6 +191,11 @@ class Issue extends Component {
                                   justify="flex-end"
                                   alignItems="center" >
                                 <IssueCard id={this.state.id}/>
+                                <td colspan="2" valign="middle" align="center">
+                                    <Button style={ButtonStyle} variant="contained" color="primary"onClick={ () => this.editIssue()} size="small"> EDIT </Button>
+                                    <Button style={ButtonStyle} variant="contained" color="secondary" onClick={ () => this.deleteIssue()} size="small"> DELETE </Button>
+
+                                </td>
 
                             </Grid>
                         </td>
