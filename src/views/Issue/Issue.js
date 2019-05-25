@@ -114,7 +114,7 @@ class Issue extends Component {
         let data = this.state.created_at.substring(0, 10);
         return(
             <div>
-                <table width="100%">
+                <table width="100%" >
                     <tr>
                         <th></th>
                         <th></th>
@@ -171,8 +171,11 @@ class Issue extends Component {
                                   alignItems="center" >
                                 <IssueCard id={this.state.id}/>
                                 <br/>
-                                <Button variant="contained" onClick={ () => this.deleteIssue(this.state.id)} size="small"> DELETE </Button>
-                                <Button variant="contained" onClick={ () => this.editIssue(this.state.id)} size="small"> EDIT </Button>
+                                <td colspan="2" valign="middle" align="center">
+                                    <Button variant="contained" color="primary"onClick={ () => this.editIssue(this.state.id)} size="small"> EDIT </Button>
+                                    <Button variant="contained" color="secondary" onClick={ () => this.deleteIssue(this.state.id)} size="small"> DELETE </Button>
+
+                                </td>
 
                             </Grid>
                         </td>
