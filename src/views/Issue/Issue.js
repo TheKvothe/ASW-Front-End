@@ -4,6 +4,9 @@ import {issueService} from '../../_services/issue.service';
 import IssueCard from '../../components/IssueCard/IssueCard';
 import {userService} from "../../_services/user.service";
 
+import CommentList from "../../components/IssueComments/CommentList";
+import {commentService} from "../../_services/comment.service";
+
 const TitleStyle = {
     fontSize: '30px',
     textAlign: 'center',
@@ -58,11 +61,23 @@ class Issue extends Component {
 
             creator_name: "",
             creator_avatar: "",
+
+            comments: [],
         };
     }
 
     componentDidMount(){
         this.GetData();
+        this.GetComments();
+    }
+
+    GetComments() {
+        commentService.getIssueComments(this.state.id)
+            .then(data => {
+                this.setState({
+                    
+                });
+            });
     }
 
     GetData(){
@@ -155,6 +170,11 @@ class Issue extends Component {
                         </td>
                     </tr>
                 </table>
+                <div className="col-8  pt-3 bg-white">
+                    <CommentList
+                        comments={this.state.comments}
+                    />
+                </div>
             </div>
         );
     }
