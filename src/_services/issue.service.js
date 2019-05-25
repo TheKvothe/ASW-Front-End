@@ -14,6 +14,7 @@ export const issueService = {
     getByID,
     post,
     update,
+    updateStatus,
     destroy,
     vote,
     unvote,
@@ -72,6 +73,13 @@ function update(id, unico, es, en , pron){
         "nombre_EN": en,
         "pronunciacion": pron,
     }, requestOptions).then(handleResponse);
+}
+
+
+function updateStatus(id,newStatus){
+    return axios.put(URI + "/issues/" + id + "/status", {
+        "status": newStatus,
+        }, requestOptions).then(handleResponse);
 }
 
 function destroy(id){

@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
 import IssueCard from '../../components/IssueCard/IssueCard';
 import {userService} from "../../_services/user.service";
+import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
 
 const TitleStyle = {
     fontSize: '30px',
@@ -145,12 +146,20 @@ class Issue extends Component {
                                 <p style={IssueDescStyle} size="small" align="left"><b>{this.state.description}</b></p>
                             </Grid>
                         </td>
+
                         <td rowSpan="2">
                             <Grid container
-                                  direction="row"
+                                  direction="column"
+                                  justify="flex-end"
+                                  alignItems="center" >
+                            <SimpleSelect id={this.state.id}/>
+                            </Grid>
+                            <Grid container
+                                  direction="column" //igual es mejor poner row como estaba antes
                                   justify="flex-end"
                                   alignItems="center" >
                                 <IssueCard id={this.state.id}/>
+
                             </Grid>
                         </td>
                     </tr>
