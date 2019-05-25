@@ -21,6 +21,13 @@ const IssueStyle = {
     marginLeft: '15px',
 };
 
+const ButtonStyle = {
+    marginTop: '20px',
+    marginBottom: '0px',
+    marginLeft: '10px',
+    marginRight: '10px',
+}
+
 const IssueDescStyle = {
     fontSize: '15px',
     textAlign: 'left',
@@ -101,12 +108,12 @@ class Issue extends Component {
 
     }
 
-    deleteIssue(id){
-        issueService.destroy(id);
+    deleteIssue(){
+        issueService.destroy(this.state.id);
         this.props.history.push("/");
     }
 
-    editIssue(id){
+    editIssue(){
         this.props.history.push("/issues/" + this.state.id + "/edit")
     }
 
@@ -170,10 +177,9 @@ class Issue extends Component {
                                   justify="flex-end"
                                   alignItems="center" >
                                 <IssueCard id={this.state.id}/>
-                                <br/>
                                 <td colspan="2" valign="middle" align="center">
-                                    <Button variant="contained" color="primary"onClick={ () => this.editIssue(this.state.id)} size="small"> EDIT </Button>
-                                    <Button variant="contained" color="secondary" onClick={ () => this.deleteIssue(this.state.id)} size="small"> DELETE </Button>
+                                    <Button style={ButtonStyle} variant="contained" color="primary"onClick={ () => this.editIssue()} size="small"> EDIT </Button>
+                                    <Button style={ButtonStyle} variant="contained" color="secondary" onClick={ () => this.deleteIssue()} size="small"> DELETE </Button>
 
                                 </td>
 
