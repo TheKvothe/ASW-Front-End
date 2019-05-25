@@ -4,7 +4,9 @@ import {issueService} from '../../_services/issue.service';
 import IssueCard from '../../components/IssueCard/IssueCard';
 import {userService} from "../../_services/user.service";
 import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
-
+import Button from '@material-ui/core/Button';
+//import Link from "react-router-dom";
+import Link from "react-router-dom/es/Link";
 const TitleStyle = {
     fontSize: '30px',
     textAlign: 'center',
@@ -99,6 +101,15 @@ class Issue extends Component {
 
     }
 
+    deleteIssue(id){
+        issueService.destroy(id);
+        this.props.history.push("/");
+    }
+
+    editIssue(id){
+        this.props.history.push("/issues/" + this.state.id + "/edit")
+    }
+
     render() {
         let data = this.state.created_at.substring(0, 10);
         return(
@@ -159,6 +170,9 @@ class Issue extends Component {
                                   justify="flex-end"
                                   alignItems="center" >
                                 <IssueCard id={this.state.id}/>
+                                <br/>
+                                <Button variant="contained" onClick={ () => this.deleteIssue(this.state.id)} size="small"> DELETE </Button>
+                                <Button variant="contained" onClick={ () => this.editIssue(this.state.id)} size="small"> EDIT </Button>
 
                             </Grid>
                         </td>
