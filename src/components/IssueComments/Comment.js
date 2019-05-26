@@ -35,7 +35,7 @@ export default function Comment(props) {
 
     function editComment() {
         // Ir al sitio para editar el commentario
-        //this.props.history.push("/comments/" + id + "/edit")
+        this.props.history.push("/comments/" + id + "/edit")
     }
 
     return (

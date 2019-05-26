@@ -41,7 +41,6 @@ const Form = {
 };
 
 
-
 class Issue extends Component {
     constructor(props) {
         super(props);
