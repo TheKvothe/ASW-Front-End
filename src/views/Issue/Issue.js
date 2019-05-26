@@ -66,6 +66,7 @@ class Issue extends Component {
 
             comments: [],
         };
+        this.actualiza = this.actualiza.bind(this);
     }
 
     componentDidMount(){
@@ -83,6 +84,7 @@ class Issue extends Component {
     }
 
     GetData(){
+        console.log("hola");
         issueService.getByID(this.state.id)
             .then(data => {
 
@@ -113,6 +115,10 @@ class Issue extends Component {
 
             });
 
+    }
+
+    actualiza(){
+        this.GetComments();
     }
 
     render() {
@@ -179,11 +185,15 @@ class Issue extends Component {
                 <div className="col-8  pt-3 bg-white">
                     <CommentList
                         comments={this.state.comments}
+                        actualizar={this.actualiza}
                     />
                 </div>
                 <div style={Form}>
                     <p align="left" >
-                    <CommentForm id={this.state.id}/>
+                    <CommentForm
+                        id={this.state.id}
+                        actualizar={this.actualiza}
+                    />
                     </p>
                 </div>
             </div>

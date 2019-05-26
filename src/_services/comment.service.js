@@ -34,7 +34,7 @@ function getIssueComments(issue_id){
 }
 
 function destroy(id){
-    return axios.delete(URI + "/comments/" + id, requestOptions)
+    return axios.delete(URI + "comments/" + id, requestOptions)
         .then(handleResponse);
 }
 
@@ -52,7 +52,7 @@ function post(issue_id, comment_text) {
 
 function handleResponse(response) {
     const data = response.data;
-    if (!(response.status===200 || response.status===201)) {
+    if (!(response.status===200 || response.status===201 || response.status===204)) {
         if (response.status === 401) {
             // auto logout if 401 response returned from api
             /*userService.logout();
