@@ -9,7 +9,7 @@ import {issueService} from '../../_services/issue.service';
 let s = "";
 let statusActual= "";
 
-function SimpleSelect(id) {
+function StatusSelector(id) {
 
     issueService.getByID(id.id)
         .then(data => {
@@ -54,4 +54,4 @@ function SimpleSelect(id) {
     );
 }
 
-export default SimpleSelect;
+export default StatusSelector;

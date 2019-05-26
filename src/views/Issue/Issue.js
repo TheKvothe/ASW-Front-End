@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
 import IssueCard from '../../components/IssueCard/IssueCard';
 import {userService} from "../../_services/user.service";
-import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
+import StatusSelector from '../../components/IssueStatusSelector/IssueStatusSelector';
 
 import CommentList from "../../components/IssueComments/CommentList";
 import CommentForm from "../../components/IssueComments/CommentForm";
@@ -165,7 +165,7 @@ class Issue extends Component {
                                   direction="column"
                                   justify="flex-end"
                                   alignItems="center" >
-                            <SimpleSelect id={this.state.id}/>
+                            <StatusSelector id={this.state.id}/>
                             </Grid>
                             <Grid container
                                   direction="column" //igual es mejor poner row como estaba antes
