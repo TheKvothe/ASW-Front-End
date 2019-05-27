@@ -15,8 +15,8 @@ class Main extends Component{
                 <div>
                     <Switch>
                         <Route  path='/login' component={Login}/>
-                        <Route exact path="/" component={Issues}/>
-                        <Route path='/issues/:id/edit' component={IssueEdit}/>
+                        <PrivateRoute exact path="/" component={Issues}/>
+                        <PrivateRoute path='/issues/:id/edit' component={IssueEdit}/>
                         <PrivateRoute path='/protected' component={Protected} />
                         {/*<PrivateRoute path="/Categorias" component={Categorias}/>
                         <PrivateRoute path="/Categoria/:id" component={Categoria}/>*/}
