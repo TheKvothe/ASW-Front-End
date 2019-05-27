@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import PropTypes from "prop-types";
 import Link from "react-router-dom/es/Link";
+import { GoogleLogout } from 'react-google-login';
+import config from '../../config.json';
 //import AuthButton from "../AuthButton/AuthButton";
 
 
@@ -40,7 +42,11 @@ class Header extends Component{
                         <Typography variant="h6" color="inherit" className={classes.grow} align="center">
                             <Link to="/">{this.state.Titulo}</Link>
                         </Typography>
-                        {/*<AuthButton/>*/}
+                        <GoogleLogout
+                            clientId={config.GOOGLE_CLIENT_ID}
+                            buttonText="Logout"
+                            onLogoutSuccess = {this.logout}
+                        ></GoogleLogout>
                     </Toolbar>
                 </AppBar>
             </div>

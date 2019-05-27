@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { GoogleLogin} from 'react-google-login';
 import config from '../../config.json';
 import axios from 'axios'
+import {Redirect} from "react-router-dom";
 
 class Login extends Component {
 
@@ -32,13 +33,13 @@ class Login extends Component {
         axios.get("https://calm-scrubland-98205.herokuapp.com/users.json?token=" + response.googleId).then(res => {
             console.log(res)
             if(res.data.length !== 0){
-                this.setState({imagen: response.profileObj.foto,
+                this.setState({
+                                    logged: "true",
+                                    imagen: response.profileObj.foto,
                                     name: response.profileObj.name,
                                     token: response.googleId,
                                     email: response.profileObj.email,
-                                    logged: "true"
-
-                                })
+                                });
             }
         })
     };
@@ -62,14 +63,14 @@ class Login extends Component {
         }
         else{
             return(
-                <GoogleLogout
-                    clientId={config.GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess = {this.logout}
-                ></GoogleLogout>
+                <Redirect to='/' />
             )
         }
     }
 }
+
+/*
+
+ */
 
 export default Login;
