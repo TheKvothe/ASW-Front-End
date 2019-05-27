@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import config from '../../config.json';
+import axios from 'axios'
 
 class Login extends Component {
 
-    constructor() {
-        super();
-        this.state = { isAuthenticated: false, user: null, token: ''};
+    constructor(props) {
+        super(props);
+        this.state = {
+            logged: "false",
+            imagen: "",
+            token: "",
+            email : "",
+            name: ""
+        };
     }
 
     logout = () => {
-        this.setState({isAuthenticated: false, token: '', user: null})
+        this.setState({logged: "",
+            imagen: "",
+            token: "",
+            email : "",
+            name: ""})
     };
 
     onFailure = (error) => {
@@ -18,54 +29,46 @@ class Login extends Component {
     };
 
     googleResponse = (response) => {
-        const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type : 'application/json'});
-        const options = {
-            method: 'POST',
-            body: tokenBlob,
-            mode: 'cors',
-            cache: 'default'
-        };
-        fetch('http://localhost:4000/api/v1/auth/google', options).then(r => {
-            const token = r.headers.get('x-auth-token');
-            r.json().then(user => {
-                if (token) {
-                    this.setState({isAuthenticated: true, user, token})
-                }
-            });
+        axios.get("https://calm-scrubland-98205.herokuapp.com/users.json?token=" + response.googleId).then(res => {
+            console.log(res)
+            if(res.data.length !== 0){
+                this.setState({imagen: response.profileObj.foto,
+                                    name: response.profileObj.name,
+                                    token: response.googleId,
+                                    email: response.profileObj.email,
+                                    logged: "true"
+
+                                })
+            }
         })
     };
 
     render() {
-        let content = !!this.state.isAuthenticated ?
-            (
-                <div>
-                    <p>Authenticated</p>
-                    <div>
-                        {this.state.user.email}
-                    </div>
-                    <div>
-                        <button onClick={this.logout} className="button">
-                            Log out
-                        </button>
-                    </div>
-                </div>
-            ) :
-            (
-                <div>
-                    <GoogleLogin
-                        clientId={config.GOOGLE_CLIENT_ID}
-                        buttonText="Login"
-                        onSuccess={this.googleResponse}
-                        onFailure={this.onFailure}
-                    />
-                </div>
-            );
+        return(
+            <div>{this.conditionalLogin(this.state.logged)} </div>
+        )
+    }
 
-        return (
-            <div className="Login">
-                {content}
-            </div>
-        );
+    conditionalLogin = (boolean) => {
+        if(boolean === "false"){
+            return(
+            <GoogleLogin
+                clientId={config.GOOGLE_CLIENT_ID}
+                buttonText="Login"
+                onSuccess={this.googleResponse}
+                cookiePolicy={'single_host_origin'}
+            />
+            )
+        }
+        else{
+            return(
+                <GoogleLogout
+                    clientId={config.GOOGLE_CLIENT_ID}
+                    buttonText="Logout"
+                    onLogoutSuccess = {this.logout}
+                ></GoogleLogout>
+            )
+        }
     }
 }
 
