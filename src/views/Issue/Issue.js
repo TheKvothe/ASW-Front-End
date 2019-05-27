@@ -3,15 +3,14 @@ import Grid from "@material-ui/core/Grid";
 import {issueService} from '../../_services/issue.service';
 import IssueCard from '../../components/IssueCard/IssueCard';
 import {userService} from "../../_services/user.service";
-import SimpleSelect from '../../components/IssueStatusSelector/IssueStatusSelector';
+import StatusSelector from '../../components/IssueStatusSelector/IssueStatusSelector';
 
 import CommentList from "../../components/IssueComments/CommentList";
 import CommentForm from "../../components/IssueComments/CommentForm";
 import {commentService} from "../../_services/comment.service";
 
 import Button from '@material-ui/core/Button';
-//import Link from "react-router-dom";
-import Link from "react-router-dom/es/Link";
+
 const TitleStyle = {
     fontSize: '30px',
     textAlign: 'center',
@@ -51,7 +50,6 @@ const Form = {
 };
 
 
-
 class Issue extends Component {
     constructor(props) {
         super(props);
@@ -77,6 +75,7 @@ class Issue extends Component {
 
             comments: [],
         };
+        this.actualiza = this.actualiza.bind(this);
     }
 
     componentDidMount(){
@@ -124,6 +123,10 @@ class Issue extends Component {
 
             });
 
+    }
+
+    actualiza(){
+        this.GetComments();
     }
 
     deleteIssue(){
@@ -184,7 +187,7 @@ class Issue extends Component {
                                   direction="column"
                                   justify="flex-end"
                                   alignItems="center" >
-                            <SimpleSelect id={this.state.id}/>
+                            <StatusSelector id={this.state.id}/>
                             </Grid>
                             <Grid container
                                   direction="column" //igual es mejor poner row como estaba antes
@@ -204,11 +207,15 @@ class Issue extends Component {
                 <div className="col-8  pt-3 bg-white">
                     <CommentList
                         comments={this.state.comments}
+                        actualizar={this.actualiza}
                     />
                 </div>
                 <div style={Form}>
                     <p align="left" >
-                    <CommentForm id={this.state.id}/>
+                    <CommentForm
+                        id={this.state.id}
+                        actualizar={this.actualiza}
+                    />
                     </p>
                 </div>
             </div>

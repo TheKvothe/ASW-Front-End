@@ -10,7 +10,7 @@ const img = {
 };
 const button = {
     marginLeft: '15px',
-}
+};
 
 
 export default class CommentForm extends Component {
@@ -60,6 +60,7 @@ export default class CommentForm extends Component {
      * Form submit handler
      */
     onSubmit(e) {
+        console.log("ofdsfsd");
         // prevent default form submission
         e.preventDefault();
 
@@ -74,7 +75,17 @@ export default class CommentForm extends Component {
         // persist the comments on server
         console.log(this.state.comment.message);
         console.log(this.state.issue_id);
-        commentService.post( this.state.issue_id ,this.state.comment.message);
+        commentService.post( this.state.issue_id ,this.state.comment.message)
+            .then( () => {
+                    this.props.actualizar();
+                this.setState({
+                    ...this.state,
+                    comment: {
+                        ...this.state.comment,
+                        message: ''
+                    }
+                });
+            })
     }
 
     /**
@@ -88,12 +99,6 @@ export default class CommentForm extends Component {
         return this.state.error ? (
             <div className="alert alert-danger">{this.state.error}</div>
         ) : null;
-    }
-
-    postComment() {
-        commentService.post( this.state.issue_id ,this.state.comment.message);
-        // No refresca bien la pagina despues de hacer el post
-        //this.props.history.push("/issues/" + this.state.issue_id);
     }
 
     render() {
@@ -111,7 +116,7 @@ export default class CommentForm extends Component {
                             rows=""
                             cols="100"
                         />
-                        <Button style={button} variant="contained" color="primary" onClick={ () => this.postComment()} size="small"> Comment &#10148; </Button>
+                        <Button type="submit" style={button} variant="contained" color="primary" size="small"> Comment &#10148; </Button>
                     </div>
 
                     {this.renderError()}

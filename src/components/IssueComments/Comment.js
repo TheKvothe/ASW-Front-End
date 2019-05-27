@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import {userService} from "../../_services/user.service";
 import {commentService} from "../../_services/comment.service";
 import Button from '@material-ui/core/Button';
@@ -8,58 +8,77 @@ const img = {
     borderRadius: '50%',
 };
 
-var name = null;
-var foto = null;
-
-function getUserInfo(id) {
-    userService.getByID(id)
-        .then ( data => {
-            name = data.name;
-            foto = data.foto;
-        });
-}
-
-
-export default function Comment(props) {
-    const { id, reporter_id, text, updated_at, issue_id } = props.comment;
-    let data = updated_at.substring(0, 10);
-
-    // Imprime mal el nombre i el avatar del usuario sempre coje solo uno independiente de que son id's diferentes
-    getUserInfo(reporter_id);
-
-    function deleteComment(){
-        commentService.destroy(id);
-        // No refresca bien la pagina una vez borras el comentario
-        //this.props.history.push("/issues/" + issue_id);
+class Comment extends Component{
+    constructor(props){
+        super(props);
+        this.state= {
+            comment: this.props.comment,
+            reporter_name: '',
+            reporter_foto: '',
+        };
+        this.deleteComment = this.deleteComment.bind(this);
     }
 
-    function editComment() {
-        // Ir al sitio para editar el commentario
-        //this.props.history.push("/comments/" + id + "/edit")
+    componentDidMount() {
+        this.getUserInfo(this.state.comment.reporter_id);
     }
 
-    return (
-        <div>
-            <table width="50%" >
-                <tr>
-                    <td rowSpan="2"><img
-                        style={img}
-                        width="48"
-                        height="48"
-                        src={foto}
-                    /></td>
-                    <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {name} {reporter_id} </p> </h6></td>
-                    <td><small className="float-right text-muted"> <p align="left"> {data} </p> </small></td>
-                </tr>
-                <tr>
-                    <td colSpan="2"> <p align="left"> {text} </p> </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td> <Button variant="contained" color="primary" onClick={ () => editComment()} size="small"> EDIT </Button> </td>
-                    <td> <Button variant="contained" color="secondary" onClick={ () => deleteComment()} size="small"> DELETE </Button> </td>
-                </tr>
-            </table>
-        </div>
-    );
+    getUserInfo(id) {
+        userService.getByID(id)
+            .then ( data => {
+                this.setState({reporter_name: data.name, reporter_foto: data.foto});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    deleteComment(){
+        if (window.confirm("Seguro que quieres eliminar el comentario?")) {
+            commentService.destroy(this.state.comment.id)
+                .then(response => {
+                    console.log(response);
+                })
+                .then(() => {
+                    this.props.actualizar();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    editComment() {
+        //Ir al sitio para editar el commentario
+    }
+
+    render(){
+        let data = this.state.comment.updated_at.substring(0, 10);
+        return(
+            <div>
+                <table width="50%" >
+                    <tr>
+                        <td rowSpan="2"><img
+                            style={img}
+                            width="48"
+                            height="48"
+                            src={this.state.reporter_foto}
+                        /></td>
+                        <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {this.state.reporter_name} {this.state.comment.reporter_id} </p> </h6></td>
+                        <td><small className="float-right text-muted"> <p align="left"> {data} </p> </small></td>
+                    </tr>
+                    <tr>
+                        <td colSpan="2"> <p align="left"> {this.state.comment.text} </p> </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td> <Button variant="contained" color="primary" onClick={ () => this.editComment()} size="small"> EDIT </Button> </td>
+                        <td> <Button variant="contained" color="secondary" onClick={ () => this.deleteComment()} size="small"> DELETE </Button> </td>
+                    </tr>
+                </table>
+            </div>
+        );
+    }
 }
+
+export default Comment;

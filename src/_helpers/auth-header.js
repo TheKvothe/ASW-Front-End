@@ -1,4 +1,4 @@
 export function authHeader() {
     return { 'Accept': 'application/json',
-             'token': 'ya29.Gl0SB-_POrdzepV8jyz3mTmI58AFlXO-PDX2U8W7QbpEeDERkLKB1E8hOxXnkvT0Gpyc_yxU-nLRW0om4jcqUtDgYYwGaiFwke3ha3sUFNaN-jXCN-kWas3r4y7TJuk'};
+             'token': 'ya29.GmASB9ndZNxIHjl0FHw925vNA9zzhiNOsx9igA-LetlamADaXeuA1Wj2Z3oDSWltKzGRKP5sUiQHVwYZRlToBYHKQiYKOTkY2FsyNI7VKokiM-xx8R9PHCYzkE-b3FUjVn4'};
 }

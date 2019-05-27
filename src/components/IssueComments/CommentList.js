@@ -15,7 +15,7 @@ export default function CommentList(props) {
                     ({props.comments.length})</span>{" "}
             </h5>
             {props.comments.map((comment, index) => (
-                <Comment key={index} comment={comment} />
+                <Comment key={index} comment={comment} actualizar={props.actualizar}/>
             ))}
         </div>
     );
