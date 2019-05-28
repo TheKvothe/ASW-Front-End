@@ -9,6 +9,7 @@ import FilledInput from "@material-ui/core/FilledInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from '@material-ui/core/Button';
 import {Link, Redirect} from "react-router-dom";
+import UserSelector from "../../components/UserSelector/userSelector";
 
 
 class IssueEdit extends Component {
@@ -55,7 +56,7 @@ class IssueEdit extends Component {
     }
 
     render() {
-        if (this.state.redirect) return <Redirect to={'/issues/' + this.state.id} /> ;
+        if (this.state.redirect) return <Redirect to={'/issues/' + this.state.id} push /> ;
         else{
             if (this.state.issue != null) {
                 return(
@@ -80,6 +81,16 @@ class IssueEdit extends Component {
                                 margin="normal"
                                 variant="outlined"
                             />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <UserSelector
+                                id={this.state.issue.id}
+                                sendAssignee={ (idAssignee) => this.setState( prevState => ({
+                                                                issue: {
+                                                                    ...prevState.issue,
+                                                                    assignee_id: idAssignee
+                                                                }
+                                }))}/>
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl variant="filled">

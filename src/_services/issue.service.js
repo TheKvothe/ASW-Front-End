@@ -73,7 +73,7 @@ function update(id, title, desc, type, priority, assignee, status){
         "details": desc,
         "type": type,
         "Priority": priority,
-        "Assignee": 0,
+        "Assignee": assignee,
         "Status": status,
     }, requestOptions).then(handleResponse);
 }
