@@ -84,19 +84,12 @@ class EnhancedTableHead extends Component {
         return(
             <TableHead>
                 <TableRow>
-                    <TableCell padding="checkbox">
-                        <Checkbox
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                        />
-                    </TableCell>
                     {rows.map(
                     row => (
                         <TableCell
+                            padding="checkbox"
                             key={row.id}
                             align={row.numeric ? 'right' : 'left'}
-                            padding={row.disablePadding ? 'none' : 'default'}
                             sortDirection={orderBy === row.id ? order : false}
                         >
                             <Tooltip
@@ -260,14 +253,6 @@ class EnhancedTable extends React.Component {
         this.setState({ order, orderBy });
     };
 
-    handleSelectAllClick = event => {
-        if (event.target.checked) {
-            this.setState(state => ({ selected: state.data.map(n => n.id) }));
-            return;
-        }
-        this.setState({ selected: [] });
-    };
-
     handleClick = (event, id) => {
         const { selected } = this.state;
         const selectedIndex = selected.indexOf(id);
@@ -315,7 +300,6 @@ class EnhancedTable extends React.Component {
                                 numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                onSelectAllClick={this.handleSelectAllClick}
                                 onRequestSort={this.handleRequestSort}
                                 rowCount={data.length}
                             />
@@ -334,10 +318,7 @@ class EnhancedTable extends React.Component {
                                                 key={n.id}
                                                 selected={isSelected}
                                             >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox checked={isSelected} />
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" padding="none">
+                                                <TableCell padding="checkbox" component="th" scope="row">
                                                     <Link to={'/issues/' + n.issueID}>{'#' + n.issueID + ' ' + n.title}</Link>
                                                 </TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.type + '.svg'} alt={n.type}/></TableCell>
