@@ -59,6 +59,7 @@ class UserSelector extends Component {
                                     <MenuItem value={user.id}>{user.name}</MenuItem>
                                 );
                             })}
+                            <MenuItem value={0}>None</MenuItem>
                         </Select>
                     </FormControl>
                 </form>
