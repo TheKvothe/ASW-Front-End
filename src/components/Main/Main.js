@@ -3,6 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import Issues from "../../views/Issues/Issues";
 import IssueEdit from '../../views/Issues/IssueEdit'
 import Login from "../../views/login/login";
+import Issue from "../../views/Issue/Issue";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 
@@ -16,10 +17,9 @@ class Main extends Component{
                     <Switch>
                         <Route  path='/login' component={Login}/>
                         <PrivateRoute exact path="/" component={Issues}/>
+                        <PrivateRoute exact path='/issues/:id' component={Issue} />
                         <PrivateRoute path='/issues/:id/edit' component={IssueEdit}/>
                         <PrivateRoute path='/protected' component={Protected} />
-                        {/*<PrivateRoute path="/Categorias" component={Categorias}/>
-                        <PrivateRoute path="/Categoria/:id" component={Categoria}/>*/}
                     </Switch>
                 </div>
         );
