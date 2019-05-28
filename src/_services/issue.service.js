@@ -66,12 +66,15 @@ function post(title, desc, type, priority, assignee) {
         "Assignee": assignee}, requestOptions).then(handleResponse);
 }
 
-function update(id, unico, es, en , pron){
-    return axios.patch(URI + "/issues/" + id, {
-        "nombre_unico": unico,
-        "nombre_ES": es,
-        "nombre_EN": en,
-        "pronunciacion": pron,
+function update(id, title, desc, type, priority, assignee, status){
+    console.log(id + ' ' + title + ' ' + desc + ' ' + type + ' ' + priority + ' ' + assignee);
+    return axios.put(URI + "/issues/" + id, {
+        "title": title,
+        "details": desc,
+        "type": type,
+        "Priority": priority,
+        "Assignee": 0,
+        "Status": status,
     }, requestOptions).then(handleResponse);
 }
 

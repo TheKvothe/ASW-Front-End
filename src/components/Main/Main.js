@@ -3,7 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import Issues from "../../views/Issues/Issues";
 import IssueEdit from '../../views/Issues/IssueEdit'
 import Login from "../../views/login/login";
-import Issue from "../../views/Issue/Issue";
+import Issue from "../../views/Issues/Issue";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 

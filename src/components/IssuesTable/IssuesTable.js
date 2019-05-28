@@ -347,7 +347,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell>{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
-                                                <TableCell><Link to={'/issues/' + n.issueID + '/edit'}><button>editar</button></Link></TableCell>
+                                                <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>
                                             </TableRow>
                                         );
                                     })}
