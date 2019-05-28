@@ -36,9 +36,6 @@ class Comment extends Component{
     deleteComment(){
         if (window.confirm("Seguro que quieres eliminar el comentario?")) {
             commentService.destroy(this.state.comment.id)
-                .then(response => {
-                    console.log(response);
-                })
                 .then(() => {
                     this.props.actualizar();
                 })

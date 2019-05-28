@@ -126,6 +126,7 @@ class Issue extends Component {
     }
 
     actualiza(){
+        this.GetData();
         this.GetComments();
     }
 
@@ -187,7 +188,7 @@ class Issue extends Component {
                                   direction="column"
                                   justify="flex-end"
                                   alignItems="center" >
-                            <StatusSelector id={this.state.id}/>
+                            <StatusSelector id={this.state.id} actualizar={this.actualiza}/>
                             </Grid>
                             <Grid container
                                   direction="column" //igual es mejor poner row como estaba antes
