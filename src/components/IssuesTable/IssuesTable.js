@@ -28,9 +28,11 @@ import Paper from "@material-ui/core/Paper";
 
 let counter = 0;
 
-function createData(title, type, status, priority, issueID) {
+function createData(title, type, status, priority, issueID, votes, assignee, created, updated) {
     counter += 1;
-    return { id: counter, title, type, status, priority, issueID};
+    created = created.substring(0, 10);
+    updated = updated.substring(0, 10);
+    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated};
 }
 
 function desc(a, b, orderBy) {
@@ -61,8 +63,12 @@ const rows = [
     //{ id: 'id', numeric: true, disablePadding: true, label: 'ID' },
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
     { id: 'type', numeric: false, disablePadding: false, label: 'Type' },
-    { id: 'status', numeric: false, disablePadding: false, label: 'Status'},
     { id: 'priority', numeric: false, disablePadding: false, label: 'Priority' },
+    { id: 'status', numeric: false, disablePadding: false, label: 'Status'},
+    { id: 'votes', numeric: false, disablePadding: false, label: 'Votes' },
+    { id: 'assignee', numeric: false, disablePadding: false, label: 'Assignee'},
+    { id: 'createdAt', numeric: false, disablePadding: false, label: 'Created'},
+    { id: 'updatedAt', numeric: false, disablePadding: false, label: 'Updated'},
     { id: 'spaceForEditImage', numeric: false, disablePadding: false, label: ''}, //espacio para que la linea de la cabecera cubra todo
 ];
 
@@ -233,7 +239,11 @@ class EnhancedTable extends React.Component {
             issues.then( datos => {
             let data = [];
             datos.forEach( issue => {
-                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id))
+                let votes = 0;
+                if (issue.votes != null) {
+                    votes=issue.votes;
+                }
+                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, issue.assignee_id,issue.created_at,issue.updated_at))
             });
             this.setState({data});
         });
@@ -328,11 +338,15 @@ class EnhancedTable extends React.Component {
                                                     <Checkbox checked={isSelected} />
                                                 </TableCell>
                                                 <TableCell component="th" scope="row" padding="none">
-                                                    {n.title}
+                                                    <Link to={'/issues/' + n.issueID}>{'#' + n.issueID + ' ' + n.title}</Link>
                                                 </TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.type + '.svg'} alt={n.type}/></TableCell>
-                                                <TableCell>{n.status}</TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
+                                                <TableCell>{n.status}</TableCell>
+                                                <TableCell>{n.votes}</TableCell>
+                                                <TableCell>{n.assignee}</TableCell>
+                                                <TableCell>{n.created}</TableCell>
+                                                <TableCell>{n.updated}</TableCell>
                                                 <TableCell><Link to={'/issues/' + n.issueID + '/edit'}><button>editar</button></Link></TableCell>
                                             </TableRow>
                                         );
