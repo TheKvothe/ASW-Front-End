@@ -32,6 +32,7 @@ class Login extends Component {
     };
 
     googleResponse = (response) => {
+        console.log('esto: ' + JSON.stringify(response.profileObj));
         axios.get("https://calm-scrubland-98205.herokuapp.com/users.json?token=" + response.googleId).then(res => {
             if(res.data.length !== 0){
                 this.setState({
@@ -41,7 +42,8 @@ class Login extends Component {
                     token: response.googleId,
                     email: response.profileObj.email,
                 });
-                localStorage.setItem('user', JSON.stringify(response.googleId));
+                localStorage.setItem('user', response.googleId);
+                localStorage.setItem('foto', response.profileObj.imageUrl);
                 const { from } = this.props.location.state || { from: { pathname: "/" } };
                 this.props.history.push(from);
             }
@@ -77,6 +79,5 @@ class Login extends Component {
         }
     }
 }
-
 
 export default Login;
