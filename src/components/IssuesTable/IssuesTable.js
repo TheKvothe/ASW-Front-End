@@ -85,7 +85,7 @@ class EnhancedTableHead extends Component {
     };
 
     render() {
-        const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+        const { order, orderBy, rowCount } = this.props;
         return(
             <TableHead>
                 <TableRow>
@@ -123,7 +123,6 @@ class EnhancedTableHead extends Component {
 EnhancedTableHead.propTypes = {
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -155,40 +154,24 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-    const {numSelected, classes} = props;
+    const {classes} = props;
 
     return (
         <Toolbar
-            className={classNames(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
+            className={classNames(classes.root, )}
         >
             <div className={classes.title}>
-                {numSelected > 0 ? (
-                    <Typography color="inherit" variant="subtitle1">
-                        {numSelected} selected
-                    </Typography>
-                ) : (
-                    <Typography variant="h6" id="tableTitle">
-                        Issues
-                    </Typography>
-                )}
+                <Typography variant="h6" id="tableTitle">
+                    Issues
+                </Typography>
             </div>
             <div className={classes.spacer} />
             <div className={classes.actions}>
-                {numSelected > 0 ? (
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="Delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton aria-label="Filter list">
-                            <FilterListIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
+                <Tooltip title="Filter list">
+                    <IconButton aria-label="Filter list">
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
             </div>
         </Toolbar>
     );
@@ -196,7 +179,6 @@ let EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
     classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -221,7 +203,6 @@ class EnhancedTable extends React.Component {
         this.state = {
             order: 'asc',
             orderBy: 'calories',
-            selected: [],
             data: [],
             page: 0,
             rowsPerPage: 5,
@@ -273,24 +254,7 @@ class EnhancedTable extends React.Component {
     };
 
     handleClick = (event, id) => {
-        const { selected } = this.state;
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        this.setState({ selected: newSelected });
+        //ToDo handle select
     };
 
     handleChangePage = (event, page) => {
@@ -301,22 +265,20 @@ class EnhancedTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
-    isSelected = id => this.state.selected.indexOf(id) !== -1;
 
 
     render() {
         const {classes} = this.props;
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
+        const {data, order, orderBy, rowsPerPage, page} = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
             <div>
                 <Paper className={classes.root}>
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <EnhancedTableToolbar />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <EnhancedTableHead
-                                numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
                                 onRequestSort={this.handleRequestSort}
@@ -326,16 +288,13 @@ class EnhancedTable extends React.Component {
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(n => {
-                                        const isSelected = this.isSelected(n.id);
                                         return (
                                             <TableRow
                                                 hover
                                                 onClick={event => this.handleClick(event, n.id)}
                                                 role="checkbox"
-                                                aria-checked={isSelected}
                                                 tabIndex={-1}
                                                 key={n.id}
-                                                selected={isSelected}
                                             >
                                                 <TableCell padding="checkbox" component="th" scope="row">
                                                     <Link to={'/issues/' + n.issueID}>{'#' + n.issueID + ' ' + n.title}</Link>
