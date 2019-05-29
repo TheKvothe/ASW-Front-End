@@ -5,10 +5,14 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import PropTypes from "prop-types";
 import Link from "react-router-dom/es/Link";
-import { GoogleLogout } from 'react-google-login';
-import config from '../../config.json';
 import AuthButton from "../AuthButton/AuthButton";
+import '../../views/Issues/issues.css';
 
+
+const WelcStyle = {
+    fontSize: '30px',
+    textAlign: 'center',
+};
 
 const styles = {
     root: {
@@ -40,7 +44,7 @@ class Header extends Component{
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" color="inherit" className={classes.grow} align="center">
-                            <Link to="/">{this.state.Titulo}</Link>
+                            <Link to="/"><p className='titulo' style={WelcStyle} align="center"><b>Issue tracker ASW!</b></p></Link>
                         </Typography>
                         <AuthButton/>
                     </Toolbar>

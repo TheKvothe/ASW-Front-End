@@ -1,0 +1,16 @@
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: dodgerblue;
+}
+
+a {
+    text-decoration: none;
+}
+
+.titulo {
+    color:white;
+}
+
