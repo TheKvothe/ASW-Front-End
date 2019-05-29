@@ -6,8 +6,11 @@ import axios from "axios";
 const URI = 'https://calm-scrubland-98205.herokuapp.com/';
 
 const requestOptions = {
-    headers: authHeader()
+    headers: authHeader(),
 };
+
+
+
 
 export const issueService = {
     getAll,
@@ -15,6 +18,9 @@ export const issueService = {
     post,
     update,
     updateStatus,
+    getUnresolved,
+    getMyIssues,
+    getWatching,
     destroy,
     vote,
     unvote,
@@ -49,6 +55,26 @@ function unwatch(id) {
 
 function getAll() {
     return axios.get(URI + '/issues',requestOptions)
+        .then(handleResponse);
+};
+
+function getMyIssues() {
+    return axios.get(URI + '/issues',requestOptions)
+        .then(handleResponse)
+}
+
+function getWatching() {
+    return axios.get(URI + '/issues',requestOptions)
+        .then(handleResponse)
+}
+
+function getUnresolved() {
+    let requestOptionsUnresolved = {
+        headers: authHeader(),
+        params: {
+            'status[]': 'unresolved'
+        }};
+    return axios.get(URI + '/issues',requestOptionsUnresolved)
         .then(handleResponse);
 };
 

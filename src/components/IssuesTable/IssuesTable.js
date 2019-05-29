@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
-import PropTypes from 'prop-types';
+import PropTypes, {any} from 'prop-types';
 import {lighten} from "@material-ui/core/styles/colorManipulator";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -19,6 +19,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+
+import Button from '@material-ui/core/Button/index';
 
 import classNames from 'classnames';
 import withStyles from "@material-ui/core/es/styles/withStyles";
@@ -79,16 +81,21 @@ const rows = [
 ];
 
 
+
+
 class EnhancedTableHead extends Component {
 
     createSortHandler = property => event => {
         this.props.onRequestSort(event, property);
     };
 
+
     render() {
         const { order, orderBy, rowCount } = this.props;
         return(
+
             <TableHead>
+
                 <TableRow>
                     {rows.map(
                     row => (
@@ -211,11 +218,23 @@ class EnhancedTable extends React.Component {
     };
 
     componentDidMount() {
-        this.getPalabras();
+        this.getPalabras('all');
     };
 
-    getPalabras(){
-        let issues = issueService.getAll();
+    getPalabras(filtro){
+        let issues
+        if(filtro=='unresolved') {
+            issues = issueService.getUnresolved();
+        }
+        else if(filtro='myIssues') {
+            issues = issueService.getMyIssues();
+        }
+        else if(filtro=='watching') {
+            issues = issueService.getAll();
+        }
+        else{
+            issues = issueService.getAll();
+        }
             issues.then( datos => {
             let data = [];
             datos.forEach( issue => {
@@ -267,7 +286,6 @@ class EnhancedTable extends React.Component {
     };
 
 
-
     render() {
         const {classes} = this.props;
         const {data, order, orderBy, rowsPerPage, page} = this.state;
@@ -276,6 +294,10 @@ class EnhancedTable extends React.Component {
         return (
             <div>
                 <Paper className={classes.root}>
+                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('all')}> All </Button>
+                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('unresolved')}> Unresolved </Button>
+                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('myIssues')}> My Issues </Button>
+                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('watching')}> Watching </Button>
                     <EnhancedTableToolbar />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
