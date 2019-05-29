@@ -207,7 +207,7 @@ class Issue extends Component {
                 </table>
                 <div className="col-8  pt-3 bg-white">
                     <CommentList
-                        comments={this.state.comments}
+                        id={this.state.id}
                         actualizar={this.actualiza}
                     />
                 </div>
