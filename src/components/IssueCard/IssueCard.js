@@ -71,10 +71,9 @@ class IssueCard extends Component {
                 var voted = false;
                 var watched = false;
                 var it=0;
-                console.log(this.state.username);
-                console.log(data.voters);
-                console.log(data.watchers);
-                //Comprobar si el usuario ha votado/watcheado la issue  (comprobación hardcodeada con id=10)
+                //console.log(this.state.username);
+                //console.log(data.voters);
+                //console.log(data.watchers);
                 for (it = 0; it < data.voters.length; ++it){
                     if (data.voters[it][0][1] == this.state.username) voted=true;
                 }

@@ -25,6 +25,7 @@ import withStyles from "@material-ui/core/es/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
 import {userService} from "../../_services/user.service";
 import './table.css';
+import Button from "@material-ui/core/Button";
 
 const img = {
     marginLeft: '15px',
@@ -34,11 +35,11 @@ const img = {
 
 let counter = 0;
 
-function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar) {
+function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar, watched) {
     counter += 1;
     created = created.substring(0, 10);
     updated = updated.substring(0, 10);
-    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar};
+    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar, watched};
 }
 
 function desc(a, b, orderBy) {
@@ -207,6 +208,7 @@ class EnhancedTable extends React.Component {
             data: [],
             page: 0,
             rowsPerPage: 5,
+            username: localStorage.getItem('name'),
         }
     };
 
@@ -223,19 +225,25 @@ class EnhancedTable extends React.Component {
                 if (issue.votes != null) {
                     votes=issue.votes;
                 }
+                var watched = false;
+                var it=0;
+                for (it = 0; it < issue.watchers.length; ++it){
+                    if (issue.watchers[it][1] == this.state.username) watched=true;
+                }
+
                 let assignee_avatar;
                 let assignee_name;
                 if (issue.assignee_id != null){
                     userService.getByID(issue.assignee_id)
                         .then ( user => {
-                            console.log(data);
+                            //console.log(data);
                             assignee_name = user.name;
                             assignee_avatar =  user.foto;
-                            data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar))
+                            data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar, watched))
                         });
                 }
                 else{
-                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, ''))
+                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, '', watched))
                 }
 
             });
@@ -266,6 +274,26 @@ class EnhancedTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
+    watch(id) {
+        //console.log('Watch ID is:', id);
+        issueService.watch(id);
+        this.setState({data: []});
+        this.getPalabras();
+        //var watches = this.state.watches + 1;
+        //var watched = !this.state.watched;
+        //this.setState({watches, watched})
+    }
+
+    unwatch(id) {
+        //console.log('Unwatch ID is:', id);
+        issueService.unwatch(id);
+        this.setState({data: []});
+        this.getPalabras();
+        //var watches = this.state.watches - 1;
+        //var watched = !this.state.watched;
+        //this.setState({watches, watched})
+    }
+
 
 
     render() {
@@ -289,6 +317,15 @@ class EnhancedTable extends React.Component {
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(n => {
+                                        // para ver si estoy watching o no una issue
+                                        let img_w;
+                                        //console.log(n.watched);
+                                        if (!n.watched) {
+                                            img_w = <img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'} onClick={ () => this.watch(n.issueID)}/>;
+                                        } else {
+                                            img_w = <img src={process.env.PUBLIC_URL + '/iconos/watching.svg'} alt={'Watch'} onClick={ () => this.unwatch(n.issueID)}/>;
+                                        }
+
                                         return (
                                             <TableRow
                                                 hover
@@ -307,7 +344,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell><img className='avatar' style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
-                                                <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>
+                                                <TableCell>{img_w}</TableCell>
                                             </TableRow>
                                         );
                                     })}
