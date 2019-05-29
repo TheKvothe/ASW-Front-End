@@ -67,7 +67,7 @@ function post(title, desc, type, priority, assignee) {
 }
 
 function update(id, title, desc, type, priority, assignee, status){
-    console.log(id + ' ' + title + ' ' + desc + ' ' + type + ' ' + priority + ' ' + assignee);
+    console.log("aa " + assignee);
     return axios.put(URI + "/issues/" + id, {
         "title": title,
         "details": desc,

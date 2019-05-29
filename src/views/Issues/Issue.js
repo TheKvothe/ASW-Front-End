@@ -10,7 +10,6 @@ import CommentForm from "../../components/IssueComments/CommentForm";
 import {commentService} from "../../_services/comment.service";
 
 import Button from '@material-ui/core/Button/index';
-import UserSelector from "../../components/UserSelector/userSelector";
 
 const TitleStyle = {
     fontSize: '30px',

@@ -76,12 +76,7 @@ class IssueCreate extends Component {
                     <Grid item xs={12}>
                         <UserSelector
                             id={this.state.id}
-                            sendAssignee={ (idAssignee) => this.setState( prevState => ({
-                                                            issue: {
-                                                                ...prevState.issue,
-                                                                assignee_id: idAssignee
-                                                            }
-                            }))}/>
+                            sendAssignee={ (idAssignee) => this.setState( {assignee_id: idAssignee})}/>
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl variant="filled">
