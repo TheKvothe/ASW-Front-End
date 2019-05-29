@@ -25,6 +25,7 @@ const AuthButton = withRouter(({ history }) => (
                     if(res.data.length !== 0){
                         localStorage.setItem('user', response.googleId);
                         localStorage.setItem('foto', response.profileObj.imageUrl);
+                        localStorage.setItem('name', response.profileObj.name);
                         history.push('/');
                     }
                 })

@@ -45,6 +45,7 @@ class Login extends Component {
                 });
                 localStorage.setItem('user', response.googleId);
                 localStorage.setItem('foto', response.profileObj.imageUrl);
+                localStorage.setItem('name', response.profileObj.name);
                 const { from } = this.props.location.state || { from: { pathname: "/" } };
                 this.props.history.push(from);
             }
