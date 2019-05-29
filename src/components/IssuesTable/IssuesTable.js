@@ -23,16 +23,21 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import classNames from 'classnames';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
+import {userService} from "../../_services/user.service";
 
-
+const img = {
+    marginLeft: '15px',
+    borderRadius: '50%',
+    marginRight: '15px',
+};
 
 let counter = 0;
 
-function createData(title, type, status, priority, issueID, votes, assignee, created, updated) {
+function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar) {
     counter += 1;
     created = created.substring(0, 10);
     updated = updated.substring(0, 10);
-    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated};
+    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar};
 }
 
 function desc(a, b, orderBy) {
@@ -236,7 +241,21 @@ class EnhancedTable extends React.Component {
                 if (issue.votes != null) {
                     votes=issue.votes;
                 }
-                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, issue.assignee_id,issue.created_at,issue.updated_at))
+                let assignee_avatar;
+                let assignee_name;
+                if (issue.assignee_id != null){
+                    userService.getByID(issue.assignee_id)
+                        .then ( user => {
+                            console.log(data);
+                            assignee_name = user.name;
+                            assignee_avatar =  user.foto;
+                            data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar))
+                        });
+                }
+                else{
+                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, ''))
+                }
+
             });
             this.setState({data});
         });
@@ -325,7 +344,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
                                                 <TableCell>{n.votes}</TableCell>
-                                                <TableCell>{n.assignee}</TableCell>
+                                                <TableCell><img style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>
