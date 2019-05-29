@@ -34,6 +34,10 @@ const img = {
     marginRight: '15px',
 };
 
+const button = {
+    marginLeft: '15px',
+}
+
 let counter = 0;
 
 function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar) {
@@ -295,9 +299,9 @@ class EnhancedTable extends React.Component {
             <div>
                 <Paper className={classes.root}>
                     <Button variant="contained" color="primary" onClick={ () => this.getPalabras('all')}> All </Button>
-                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('unresolved')}> Unresolved </Button>
-                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('myIssues')}> My Issues </Button>
-                    <Button variant="contained" color="primary" onClick={ () => this.getPalabras('watching')}> Watching </Button>
+                    <Button style = {button} variant="contained" color="primary" onClick={ () => this.getPalabras('unresolved')}> Unresolved </Button>
+                    <Button style = {button}  variant="contained" color="primary" onClick={ () => this.getPalabras('myIssues')}> My Issues </Button>
+                    <Button style = {button}  variant="contained" color="primary" onClick={ () => this.getPalabras('watching')}> Watching </Button>
                     <EnhancedTableToolbar />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
