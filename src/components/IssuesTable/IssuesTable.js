@@ -24,6 +24,7 @@ import classNames from 'classnames';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
 import {userService} from "../../_services/user.service";
+import './table.css';
 
 const img = {
     marginLeft: '15px',
@@ -303,7 +304,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
                                                 <TableCell>{n.votes}</TableCell>
-                                                <TableCell><img style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
+                                                <TableCell><img className='avatar' style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>

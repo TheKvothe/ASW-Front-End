@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import {commentService} from "../../_services/comment.service";
+import './comments.css';
 
 const img = {
     marginLeft: '15px',
@@ -96,7 +97,7 @@ class CommentForm extends Component {
             <React.Fragment>
                 <form method="post" onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <img style={img} src={this.state.CU_avatar} alt="avatar" />
+                        <img className='avatarPost' style={img} src={this.state.CU_avatar} alt="avatar" />
                         <textarea
                             onChange={this.handleFieldChange}
                             value={this.state.comment.message}

@@ -57,8 +57,8 @@ class Comment extends Component{
                     <tr>
                         <td rowSpan="2"><img
                             style={img}
-                            width="48"
-                            height="48"
+                            width="50"
+                            height="50"
                             src={this.state.reporter_foto}
                         /></td>
                         <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {this.state.reporter_name} {this.state.comment.reporter_id} </p> </h6></td>
