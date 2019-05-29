@@ -26,11 +26,12 @@ class StatusSelector extends Component {
     }
 
     handleChange(event) {
-        this.setState({statusActual: event.target.value});
+
         issueService.updateStatus(this.state.id, event.target.value)
             .then(() => {
                 this.props.actualizar();
             });
+        this.setState({statusActual: event.target.value});
     }
 
     render() {

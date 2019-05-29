@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {issueService} from "../../_services/issue.service";
 import {userService} from "../../_services/user.service";
-
 const styles = {
     card: {
         minWidth: 275,
@@ -38,7 +37,7 @@ class IssueCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            id: "",
+            /*id: "",
             title: "",
             description: "",
             type_issue: "",
@@ -52,7 +51,7 @@ class IssueCard extends Component {
             updated_at: "",
             voters: "",
             watchers: "",
-            _links:"",
+            _links:"",*/
 
             assignee_name: " - ",
             assignee_avatar: null,
@@ -177,7 +176,7 @@ class IssueCard extends Component {
                         <br/>
                         <b> Priority: </b> {this.state.priority}
                         <br/>
-                        <b> Status: </b> {this.state.status}
+                        <b> Status: </b> {this.props.status}
                         <br/>
                         <b> Votes: </b> {this.state.votes} {button_v}
                         <br/>

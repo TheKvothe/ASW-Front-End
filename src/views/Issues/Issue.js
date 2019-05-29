@@ -10,6 +10,7 @@ import CommentForm from "../../components/IssueComments/CommentForm";
 import {commentService} from "../../_services/comment.service";
 
 import Button from '@material-ui/core/Button/index';
+import UserSelector from "../../components/UserSelector/userSelector";
 
 const TitleStyle = {
     fontSize: '30px',
@@ -196,7 +197,7 @@ class Issue extends Component {
                                   direction="column" //igual es mejor poner row como estaba antes
                                   justify="flex-end"
                                   alignItems="center" >
-                                <IssueCard id={this.state.id}/>
+                                <IssueCard id={this.state.id} status={this.state.status}/>
                                 <td colspan="2" valign="middle" align="center">
                                     <Button style={ButtonStyle} variant="contained" color="primary"onClick={ () => this.editIssue()} size="small"> EDIT </Button>
                                     <Button style={ButtonStyle} variant="contained" color="secondary" onClick={ () => this.deleteIssue()} size="small"> DELETE </Button>

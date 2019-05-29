@@ -115,11 +115,11 @@ class IssueEdit extends Component {
                                     onChange={this.handleChange('priority')}
                                     input={<FilledInput name="priority" id="filled-priority-simple" />}
                                 >
-                                    <MenuItem value={'blocker'}>Bug</MenuItem>
-                                    <MenuItem value={'critical'}>Task</MenuItem>
-                                    <MenuItem value={'major'}>Proposal</MenuItem>
-                                    <MenuItem value={'minor'}>minor</MenuItem>
-                                    <MenuItem value={'trivial'}>trivial</MenuItem>
+                                    <MenuItem value={'blocker'}>Blocker</MenuItem>
+                                    <MenuItem value={'critical'}>Critical</MenuItem>
+                                    <MenuItem value={'major'}>Major</MenuItem>
+                                    <MenuItem value={'minor'}>Minor</MenuItem>
+                                    <MenuItem value={'trivial'}>Trivial</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
