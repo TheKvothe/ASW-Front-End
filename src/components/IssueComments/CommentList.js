@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import Comment from "./Comment";
-import {commentService} from "../../_services/comment.service";
 
 const TitleStyle = {
     fontSize: '20px',
@@ -12,25 +11,8 @@ class CommentList extends Component{
     constructor(props) {
         super(props);
         this.state= {
-            id: this.props.id,
-            comments: null,
+            comments: this.props.comments,
         };
-        this.actualiza = this.actualiza.bind(this);
-    }
-
-    componentDidMount(){
-        this.GetData();
-    }
-
-    GetData(){
-        commentService.getIssueComments(this.props.id)
-            .then( (res) => {
-                this.setState({comments: res});
-            })
-    }
-
-    actualiza(){
-        this.GetData();
     }
 
     render() {
@@ -40,16 +22,17 @@ class CommentList extends Component{
             return (
                 <div className="commentList">
                     <h5 align={"left"}>
-                <span style={TitleStyle} > Comment{this.state.comments.length > 0 ? "s " : " "}
-                    ({this.state.comments.length})</span>{" "}
+                <span style={TitleStyle} > Comment{this.props.comments.length > 0 ? "s " : " "}
+                    ({this.props.comments.length})</span>{" "}
                     </h5>
-                    {this.state.comments.map((comment, index) => (
-                        <Comment key={index} comment={comment} actualizar={this.actualiza}/>
+                    {this.props.comments.map((comment, index) => (
+                        <Comment key={index} comment={comment} actualizar={this.props.actualizar}/>
                     ))}
                 </div>
             );
         }
     }
 }
+
 
 export default CommentList;

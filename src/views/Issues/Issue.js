@@ -30,7 +30,7 @@ const ButtonStyle = {
     marginBottom: '0px',
     marginLeft: '10px',
     marginRight: '10px',
-}
+};
 
 const IssueDescStyle = {
     fontSize: '15px',
@@ -126,6 +126,8 @@ class Issue extends Component {
     }
 
     actualiza(){
+        console.log("holaa");
+        this.setState({comments: [] });
         this.GetData();
         this.GetComments();
     }
@@ -207,7 +209,7 @@ class Issue extends Component {
                 </table>
                 <div className="col-8  pt-3 bg-white">
                     <CommentList
-                        id={this.state.id}
+                        comments={this.state.comments}
                         actualizar={this.actualiza}
                     />
                 </div>
