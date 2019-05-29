@@ -26,7 +26,7 @@ class CommentList extends Component{
                     ({this.props.comments.length})</span>{" "}
                     </h5>
                     {this.props.comments.map((comment, index) => (
-                        <Comment key={index} comment={comment} actualizar={this.props.actualizar}/>
+                        <Comment history={this.props.history} key={index} comment={comment} actualizar={this.props.actualizar}/>
                     ))}
                 </div>
             );

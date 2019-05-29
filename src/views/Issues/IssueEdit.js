@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import {Link, Redirect} from "react-router-dom";
 import UserSelector from "../../components/UserSelector/userSelector";
 
+const button = {
+    marginLeft: '15px',
+};
 
 class IssueEdit extends Component {
     constructor(props) {
@@ -125,7 +128,7 @@ class IssueEdit extends Component {
                         </Grid>
                         <Grid item xs={12}>
                             <Link to={'/issues/' + this.state.id}><Button variant="contained" color="secondary">Back</Button></Link>
-                            <Button variant="contained" color="primary" onClick={this.updateIssue}>Update Issue</Button>
+                            <Button style={button} variant="contained" color="primary" onClick={this.updateIssue}>Update Issue</Button>
                         </Grid>
                     </Grid>
                 );

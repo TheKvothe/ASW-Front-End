@@ -3,6 +3,8 @@ import {userService} from "../../_services/user.service";
 import {commentService} from "../../_services/comment.service";
 import Button from '@material-ui/core/Button';
 
+import { withRouter } from 'react-router-dom'
+
 const img = {
     marginLeft: '0px',
     borderRadius: '50%',
@@ -47,35 +49,66 @@ class Comment extends Component{
 
     editComment() {
         //Ir al sitio para editar el commentario
+        this.props.history.push("/comments/" + this.state.comment.id + "/edit")
     }
 
     render(){
         let data = this.state.comment.updated_at.substring(0, 10);
-        return(
-            <div>
-                <table width="50%" >
-                    <tr>
-                        <td rowSpan="2"><img
-                            style={img}
-                            width="50"
-                            height="50"
-                            src={this.state.reporter_foto}
-                        /></td>
-                        <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {this.state.reporter_name} {this.state.comment.reporter_id} </p> </h6></td>
-                        <td><small className="float-right text-muted"> <p align="left"> {data} </p> </small></td>
-                    </tr>
-                    <tr>
-                        <td colSpan="2"> <p align="left"> {this.state.comment.text} </p> </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td> <Button variant="contained" color="primary" onClick={ () => this.editComment()} size="small"> EDIT </Button> </td>
-                        <td> <Button variant="contained" color="secondary" onClick={ () => this.deleteComment()} size="small"> DELETE </Button> </td>
-                    </tr>
-                </table>
-            </div>
-        );
+        let mi_comment = false;
+        if (localStorage.getItem('name') == this.state.reporter_name){
+            mi_comment = true;
+        }
+        if (mi_comment) {
+            return(
+                <div>
+                    <table width="50%" >
+                        <tr>
+                            <td rowSpan="2"><img
+                                style={img}
+                                width="50"
+                                height="50"
+                                src={this.state.reporter_foto}
+                            /></td>
+                            <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {this.state.reporter_name} {this.state.comment.reporter_id} </p> </h6></td>
+                            <td><small className="float-right text-muted"> <p align="left"> {data} </p> </small></td>
+                        </tr>
+                        <tr>
+                            <td colSpan="2"> <p align="left"> {this.state.comment.text} </p> </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> <Button variant="contained" color="primary" onClick={ () => this.editComment()} size="small"> EDIT </Button> </td>
+                            <td> <Button variant="contained" color="secondary" onClick={ () => this.deleteComment()} size="small"> DELETE </Button> </td>
+                        </tr>
+                    </table>
+                </div>
+            );
+        } else {
+            return(
+                <div>
+                    <table width="50%" >
+                        <tr>
+                            <td rowSpan="2"><img
+                                style={img}
+                                width="50"
+                                height="50"
+                                src={this.state.reporter_foto}
+                            /></td>
+                            <td><h6 className="mt-0 mb-1 text-muted"> <p align="left"> {this.state.reporter_name} {this.state.comment.reporter_id} </p> </h6></td>
+                            <td><small className="float-right text-muted"> <p align="left"> {data} </p> </small></td>
+                        </tr>
+                        <tr>
+                            <td colSpan="2"> <p align="left"> {this.state.comment.text} </p> </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            );
+        }
+
     }
 }
 
-export default Comment;
+export default withRouter(Comment);

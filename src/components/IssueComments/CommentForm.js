@@ -64,8 +64,8 @@ class CommentForm extends Component {
         this.setState({ error: "", loading: true });
 
         // persist the comments on server
-        console.log(this.state.comment.message);
-        console.log(this.state.issue_id);
+        //console.log(this.state.comment.message);
+        //console.log(this.state.issue_id);
         commentService.post( this.state.issue_id ,this.state.comment.message)
             .then( () => {
                     this.props.actualizar();

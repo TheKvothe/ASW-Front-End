@@ -127,7 +127,7 @@ class Issue extends Component {
     }
 
     actualiza(){
-        console.log("holaa");
+        //console.log("holaa");
         this.setState({comments: [] });
         this.GetData();
         this.GetComments();
