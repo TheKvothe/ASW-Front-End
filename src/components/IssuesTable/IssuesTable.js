@@ -223,17 +223,17 @@ class EnhancedTable extends React.Component {
 
     getPalabras(filtro){
         let issues
-        if(filtro=='unresolved') {
+        if(filtro =='all'){
+            issues = issueService.getAll();
+        }
+        else if(filtro=='unresolved') {
             issues = issueService.getUnresolved();
         }
         else if(filtro='myIssues') {
             issues = issueService.getMyIssues();
         }
         else if(filtro=='watching') {
-            issues = issueService.getAll();
-        }
-        else{
-            issues = issueService.getAll();
+            issues = issueService.getWatching();
         }
             issues.then( datos => {
             let data = [];

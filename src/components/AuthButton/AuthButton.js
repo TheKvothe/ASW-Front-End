@@ -23,6 +23,7 @@ const AuthButton = withRouter(({ history }) => (
             onSuccess={ (response) => {
                 axios.get("https://calm-scrubland-98205.herokuapp.com/users.json?token=" + response.googleId).then(res => {
                     if(res.data.length !== 0){
+                        localStorage.setItem('user_id', res.data[0].id);
                         localStorage.setItem('user', response.googleId);
                         localStorage.setItem('foto', response.profileObj.imageUrl);
                         history.push('/');

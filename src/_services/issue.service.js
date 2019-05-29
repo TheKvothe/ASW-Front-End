@@ -59,12 +59,22 @@ function getAll() {
 };
 
 function getMyIssues() {
-    return axios.get(URI + '/issues',requestOptions)
+    let requestOptionsMyIssues = {
+        headers: authHeader(),
+        params: {
+            'assignee_id[]': localStorage.getItem('user_id')
+        }};
+    return axios.get(URI + '/issues',requestOptionsMyIssues)
         .then(handleResponse)
 }
 
 function getWatching() {
-    return axios.get(URI + '/issues',requestOptions)
+    let requestOptionsWatching = {
+        headers: authHeader(),
+        params: {
+            watching: 'watching'
+        }};
+    return axios.get(URI + '/issues',requestOptionsWatching)
         .then(handleResponse)
 }
 
