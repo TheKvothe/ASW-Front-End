@@ -3,6 +3,7 @@ import { GoogleLogin, GoogleLogout} from 'react-google-login';
 import config from '../../config.json';
 import axios from 'axios'
 import {userService} from "../../_services/user.service";
+import {Redirect} from "react-router-dom";
 
 class Login extends Component {
 
@@ -59,22 +60,12 @@ class Login extends Component {
     conditionalLogin = (boolean) => {
         if(boolean === "false"){
             return(
-            <GoogleLogin
-                clientId={config.GOOGLE_CLIENT_ID}
-                buttonText="Login"
-                onSuccess={this.googleResponse}
-                onFailure={this.onFailure}
-                cookiePolicy={'single_host_origin'}
-            />
+            <div>Logueate para ver el contenido!</div>
             )
         }
         else{
             return(
-                <GoogleLogout
-                    clientId={config.GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess = {this.logout}
-                />
+                <Redirect to={'/'}/>
             )
         }
     }
