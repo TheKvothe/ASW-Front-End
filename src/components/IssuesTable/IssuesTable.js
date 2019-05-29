@@ -243,7 +243,7 @@ class EnhancedTable extends React.Component {
                         });
                 }
                 else{
-                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, '', watched))
+                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, null, watched))
                 }
 
             });
