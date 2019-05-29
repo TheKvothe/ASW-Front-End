@@ -40,7 +40,7 @@ function createData(title, type, status, priority, issueID, votes, assignee, cre
     counter += 1;
     created = created.substring(0, 10);
     updated = updated.substring(0, 10);
-    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar};
+    return { id: issueID, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar};
 }
 
 function desc(a, b, orderBy) {
@@ -222,17 +222,17 @@ class EnhancedTable extends React.Component {
     };
 
     getPalabras(filtro){
-        let issues
-        if(filtro =='all'){
+        let issues;
+        if(filtro == 'all'){
             issues = issueService.getAll();
         }
-        else if(filtro=='unresolved') {
+        else if(filtro == 'unresolved') {
             issues = issueService.getUnresolved();
         }
-        else if(filtro='myIssues') {
+        else if(filtro == 'myIssues') {
             issues = issueService.getMyIssues();
         }
-        else if(filtro=='watching') {
+        else if(filtro == 'watching') {
             issues = issueService.getWatching();
         }
             issues.then( datos => {

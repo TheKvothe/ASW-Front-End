@@ -86,7 +86,7 @@ function getUnresolved() {
         }};
     return axios.get(URI + '/issues',requestOptionsUnresolved)
         .then(handleResponse);
-};
+}
 
 function getByID(id){
     return axios.get(URI + '/issues/' + id, requestOptions)
