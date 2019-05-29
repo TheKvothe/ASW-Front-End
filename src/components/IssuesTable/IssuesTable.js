@@ -341,7 +341,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
                                                 <TableCell>{n.votes}</TableCell>
-                                                <TableCell><img className='avatar' style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
+                                                <TableCell>{n.assignee_avatar != null && <img className='avatar' style={img} src={n.assignee_avatar} />}{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
                                                 <TableCell>{img_w}</TableCell>
