@@ -21,7 +21,7 @@ class IssueCreate extends Component {
             description: '',
             type_issue:'',
             priority:'',
-            assignee_id: 0,
+            assignee_id: -1,
         };
         this.createIssue = this.createIssue.bind(this);
     }
