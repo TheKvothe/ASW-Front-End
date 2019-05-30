@@ -2,13 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {issueService} from "../../_services/issue.service";
 import {userService} from "../../_services/user.service";
-
 const styles = {
     card: {
         minWidth: 275,
@@ -39,7 +37,7 @@ class IssueCard extends Component {
     constructor(props){
         super(props);
         this.state = {
-            id: "",
+            /*id: "",
             title: "",
             description: "",
             type_issue: "",
@@ -53,10 +51,11 @@ class IssueCard extends Component {
             updated_at: "",
             voters: "",
             watchers: "",
-            _links:"",
+            _links:"",*/
 
             assignee_name: " - ",
             assignee_avatar: null,
+            username: localStorage.getItem('name'),
 
         }
     };
@@ -72,12 +71,14 @@ class IssueCard extends Component {
                 var voted = false;
                 var watched = false;
                 var it=0;
-                //Comprobar si el usuario ha votado/watcheado la issue  (comprobación hardcodeada con id=10)
+                //console.log(this.state.username);
+                //console.log(data.voters);
+                //console.log(data.watchers);
                 for (it = 0; it < data.voters.length; ++it){
-                    if (data.voters[it][0][0] == '10') voted=true;
+                    if (data.voters[it][0][1] == this.state.username) voted=true;
                 }
                 for (it = 0; it < data.watchers.length; ++it){
-                    if (data.watchers[it][0][0] == '10') watched=true;
+                    if (data.watchers[it][1] == this.state.username) watched=true;
                 }
 
                 var votes = 0;
@@ -118,7 +119,7 @@ class IssueCard extends Component {
     }
 
     vote(id) {
-        console.log('Vote ID is:', id);
+        //console.log('Vote ID is:', id);
         issueService.vote(id);
         var votes = this.state.votes+ 1;
         var voted = !this.state.voted;
@@ -126,7 +127,7 @@ class IssueCard extends Component {
     }
 
     unvote(id) {
-        console.log('Unvote ID is:', id);
+        //console.log('Unvote ID is:', id);
         issueService.unvote(id);
         var votes = this.state.votes - 1;
         var voted = !this.state.voted;
@@ -134,7 +135,7 @@ class IssueCard extends Component {
     }
 
     watch(id) {
-        console.log('Watch ID is:', id);
+        //console.log('Watch ID is:', id);
         issueService.watch(id);
         var watches = this.state.watches + 1;
         var watched = !this.state.watched;
@@ -142,7 +143,7 @@ class IssueCard extends Component {
     }
 
     unwatch(id) {
-        console.log('Unwatch ID is:', id);
+        //console.log('Unwatch ID is:', id);
         issueService.unwatch(id);
         var watches = this.state.watches - 1;
         var watched = !this.state.watched;
@@ -178,7 +179,7 @@ class IssueCard extends Component {
                         <br/>
                         <b> Priority: </b> {this.state.priority}
                         <br/>
-                        <b> Status: </b> {this.state.status}
+                        <b> Status: </b> {this.props.status}
                         <br/>
                         <b> Votes: </b> {this.state.votes} {button_v}
                         <br/>

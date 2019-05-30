@@ -3,6 +3,7 @@ import { GoogleLogin, GoogleLogout} from 'react-google-login';
 import config from '../../config.json';
 import axios from 'axios'
 import {userService} from "../../_services/user.service";
+import {Redirect} from "react-router-dom";
 
 class Login extends Component {
 
@@ -32,6 +33,7 @@ class Login extends Component {
     };
 
     googleResponse = (response) => {
+        console.log('esto: ' + JSON.stringify(response.profileObj));
         axios.get("https://calm-scrubland-98205.herokuapp.com/users.json?token=" + response.googleId).then(res => {
             if(res.data.length !== 0){
                 this.setState({
@@ -41,7 +43,9 @@ class Login extends Component {
                     token: response.googleId,
                     email: response.profileObj.email,
                 });
-                localStorage.setItem('user', JSON.stringify(response.googleId));
+                localStorage.setItem('user', response.googleId);
+                localStorage.setItem('foto', response.profileObj.imageUrl);
+                localStorage.setItem('name', response.profileObj.name);
                 const { from } = this.props.location.state || { from: { pathname: "/" } };
                 this.props.history.push(from);
             }
@@ -57,26 +61,15 @@ class Login extends Component {
     conditionalLogin = (boolean) => {
         if(boolean === "false"){
             return(
-            <GoogleLogin
-                clientId={config.GOOGLE_CLIENT_ID}
-                buttonText="Login"
-                onSuccess={this.googleResponse}
-                onFailure={this.onFailure}
-                cookiePolicy={'single_host_origin'}
-            />
+            <div>Logueate para ver el contenido!</div>
             )
         }
         else{
             return(
-                <GoogleLogout
-                    clientId={config.GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess = {this.logout}
-                />
+                <Redirect to={'/'}/>
             )
         }
     }
 }
-
 
 export default Login;

@@ -13,7 +13,7 @@ class UserSelector extends Component {
         super(props);
         this.state = {
             id: this.props.id,
-            current: '',
+            current: -1,
             users: null,
         };
         this.handleChange = this.handleChange.bind(this);
@@ -59,6 +59,7 @@ class UserSelector extends Component {
                                     <MenuItem value={user.id}>{user.name}</MenuItem>
                                 );
                             })}
+                            <MenuItem value={-1}>None</MenuItem>
                         </Select>
                     </FormControl>
                 </form>

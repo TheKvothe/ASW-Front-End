@@ -23,16 +23,23 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import classNames from 'classnames';
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import Paper from "@material-ui/core/Paper";
+import {userService} from "../../_services/user.service";
+import './table.css';
+import Button from "@material-ui/core/Button";
 
-
+const img = {
+    marginLeft: '15px',
+    borderRadius: '50%',
+    marginRight: '15px',
+};
 
 let counter = 0;
 
-function createData(title, type, status, priority, issueID, votes, assignee, created, updated) {
+function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar, watched) {
     counter += 1;
     created = created.substring(0, 10);
     updated = updated.substring(0, 10);
-    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated};
+    return { id: counter, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar, watched};
 }
 
 function desc(a, b, orderBy) {
@@ -80,23 +87,16 @@ class EnhancedTableHead extends Component {
     };
 
     render() {
-        const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+        const { order, orderBy, rowCount } = this.props;
         return(
             <TableHead>
                 <TableRow>
-                    <TableCell padding="checkbox">
-                        <Checkbox
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                        />
-                    </TableCell>
                     {rows.map(
                     row => (
                         <TableCell
+                            padding="checkbox"
                             key={row.id}
                             align={row.numeric ? 'right' : 'left'}
-                            padding={row.disablePadding ? 'none' : 'default'}
                             sortDirection={orderBy === row.id ? order : false}
                         >
                             <Tooltip
@@ -125,7 +125,6 @@ class EnhancedTableHead extends Component {
 EnhancedTableHead.propTypes = {
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.string.isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -157,40 +156,24 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-    const {numSelected, classes} = props;
+    const {classes} = props;
 
     return (
         <Toolbar
-            className={classNames(classes.root, {
-                [classes.highlight]: numSelected > 0,
-            })}
+            className={classNames(classes.root, )}
         >
             <div className={classes.title}>
-                {numSelected > 0 ? (
-                    <Typography color="inherit" variant="subtitle1">
-                        {numSelected} selected
-                    </Typography>
-                ) : (
-                    <Typography variant="h6" id="tableTitle">
-                        Issues
-                    </Typography>
-                )}
+                <Typography variant="h6" id="tableTitle">
+                    Issues
+                </Typography>
             </div>
             <div className={classes.spacer} />
             <div className={classes.actions}>
-                {numSelected > 0 ? (
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="Delete">
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton aria-label="Filter list">
-                            <FilterListIcon />
-                        </IconButton>
-                    </Tooltip>
-                )}
+                <Tooltip title="Filter list">
+                    <IconButton aria-label="Filter list">
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
             </div>
         </Toolbar>
     );
@@ -198,7 +181,6 @@ let EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
     classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -223,10 +205,10 @@ class EnhancedTable extends React.Component {
         this.state = {
             order: 'asc',
             orderBy: 'calories',
-            selected: [],
             data: [],
             page: 0,
             rowsPerPage: 5,
+            username: localStorage.getItem('name'),
         }
     };
 
@@ -243,7 +225,27 @@ class EnhancedTable extends React.Component {
                 if (issue.votes != null) {
                     votes=issue.votes;
                 }
-                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, issue.assignee_id,issue.created_at,issue.updated_at))
+                var watched = false;
+                var it=0;
+                for (it = 0; it < issue.watchers.length; ++it){
+                    if (issue.watchers[it][1] == this.state.username) watched=true;
+                }
+
+                let assignee_avatar;
+                let assignee_name;
+                if (issue.assignee_id != null){
+                    userService.getByID(issue.assignee_id)
+                        .then ( user => {
+                            //console.log(data);
+                            assignee_name = user.name;
+                            assignee_avatar =  user.foto;
+                            data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar, watched))
+                        });
+                }
+                else{
+                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, null, watched))
+                }
+
             });
             this.setState({data});
         });
@@ -260,33 +262,8 @@ class EnhancedTable extends React.Component {
         this.setState({ order, orderBy });
     };
 
-    handleSelectAllClick = event => {
-        if (event.target.checked) {
-            this.setState(state => ({ selected: state.data.map(n => n.id) }));
-            return;
-        }
-        this.setState({ selected: [] });
-    };
-
     handleClick = (event, id) => {
-        const { selected } = this.state;
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        this.setState({ selected: newSelected });
+        //ToDo handle select
     };
 
     handleChangePage = (event, page) => {
@@ -297,25 +274,42 @@ class EnhancedTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
-    isSelected = id => this.state.selected.indexOf(id) !== -1;
+    watch(id) {
+        //console.log('Watch ID is:', id);
+        issueService.watch(id);
+        this.setState({data: []});
+        this.getPalabras();
+        //var watches = this.state.watches + 1;
+        //var watched = !this.state.watched;
+        //this.setState({watches, watched})
+    }
+
+    unwatch(id) {
+        //console.log('Unwatch ID is:', id);
+        issueService.unwatch(id);
+        this.setState({data: []});
+        this.getPalabras();
+        //var watches = this.state.watches - 1;
+        //var watched = !this.state.watched;
+        //this.setState({watches, watched})
+    }
+
 
 
     render() {
         const {classes} = this.props;
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
+        const {data, order, orderBy, rowsPerPage, page} = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
             <div>
                 <Paper className={classes.root}>
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <EnhancedTableToolbar />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <EnhancedTableHead
-                                numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                onSelectAllClick={this.handleSelectAllClick}
                                 onRequestSort={this.handleRequestSort}
                                 rowCount={data.length}
                             />
@@ -323,31 +317,34 @@ class EnhancedTable extends React.Component {
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(n => {
-                                        const isSelected = this.isSelected(n.id);
+                                        // para ver si estoy watching o no una issue
+                                        let img_w;
+                                        //console.log(n.watched);
+                                        if (!n.watched) {
+                                            img_w = <img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'} onClick={ () => this.watch(n.issueID)}/>;
+                                        } else {
+                                            img_w = <img src={process.env.PUBLIC_URL + '/iconos/watching.svg'} alt={'Watch'} onClick={ () => this.unwatch(n.issueID)}/>;
+                                        }
+
                                         return (
                                             <TableRow
                                                 hover
                                                 onClick={event => this.handleClick(event, n.id)}
                                                 role="checkbox"
-                                                aria-checked={isSelected}
                                                 tabIndex={-1}
                                                 key={n.id}
-                                                selected={isSelected}
                                             >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox checked={isSelected} />
-                                                </TableCell>
-                                                <TableCell component="th" scope="row" padding="none">
+                                                <TableCell padding="checkbox" component="th" scope="row">
                                                     <Link to={'/issues/' + n.issueID}>{'#' + n.issueID + ' ' + n.title}</Link>
                                                 </TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.type + '.svg'} alt={n.type}/></TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
                                                 <TableCell>{n.votes}</TableCell>
-                                                <TableCell>{n.assignee}</TableCell>
+                                                <TableCell>{n.assignee_avatar != null && <img className='avatar' style={img} src={n.assignee_avatar} />}{n.assignee}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
-                                                <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>
+                                                <TableCell>{img_w}</TableCell>
                                             </TableRow>
                                         );
                                     })}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import Comment from "./Comment";
 
 const TitleStyle = {
@@ -7,16 +7,32 @@ const TitleStyle = {
     marginLeft: '15px',
 };
 
-export default function CommentList(props) {
-    return (
-        <div className="commentList">
-            <h5 align={"left"}>
-                <span style={TitleStyle} > Comment{props.comments.length > 0 ? "s " : " "}
-                    ({props.comments.length})</span>{" "}
-            </h5>
-            {props.comments.map((comment, index) => (
-                <Comment key={index} comment={comment} actualizar={props.actualizar}/>
-            ))}
-        </div>
-    );
+class CommentList extends Component{
+    constructor(props) {
+        super(props);
+        this.state= {
+            comments: this.props.comments,
+        };
+    }
+
+    render() {
+        if (this.state.comments == null)
+            return <div></div>
+        else{
+            return (
+                <div className="commentList">
+                    <h5 align={"left"}>
+                <span style={TitleStyle} > Comment{this.props.comments.length > 0 ? "s " : " "}
+                    ({this.props.comments.length})</span>{" "}
+                    </h5>
+                    {this.props.comments.map((comment, index) => (
+                        <Comment history={this.props.history} key={index} comment={comment} actualizar={this.props.actualizar}/>
+                    ))}
+                </div>
+            );
+        }
+    }
 }
+
+
+export default CommentList;

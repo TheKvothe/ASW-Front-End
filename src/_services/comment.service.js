@@ -34,13 +34,13 @@ function getIssueComments(issue_id){
 }
 
 function destroy(id){
-    return axios.delete(URI + "comments/" + id, requestOptions)
+    return axios.delete(URI + "/comments/" + id, requestOptions)
         .then(handleResponse);
 }
 
-function update(id, new_text){
-    return axios.patch(URI + "/comment/" + id, {
-        "text": new_text
+function update(id, text){
+    return axios.put(URI + "/comments/" + id, {
+        "text": text,
     }, requestOptions).then(handleResponse);
 }
 

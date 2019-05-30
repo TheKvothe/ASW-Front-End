@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import {userService} from "../../_services/user.service";
 import Button from "@material-ui/core/Button";
 import {commentService} from "../../_services/comment.service";
+import './comments.css';
 
 const img = {
     marginLeft: '15px',
@@ -13,7 +13,7 @@ const button = {
 };
 
 
-export default class CommentForm extends Component {
+class CommentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,17 +24,9 @@ export default class CommentForm extends Component {
                 message: ""
             },
 
-            current_user: 10, //Esta hardcoded
-            CU_avatar: "",
+            CU_avatar: localStorage.getItem('foto'),
             issue_id: this.props.id,
         };
-
-        userService.getByID(this.state.current_user)
-            .then ( data => {
-                this.setState({
-                    CU_avatar: data.foto
-                });
-            });
 
         // bind context to methods
         this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -60,7 +52,6 @@ export default class CommentForm extends Component {
      * Form submit handler
      */
     onSubmit(e) {
-        console.log("ofdsfsd");
         // prevent default form submission
         e.preventDefault();
 
@@ -73,8 +64,8 @@ export default class CommentForm extends Component {
         this.setState({ error: "", loading: true });
 
         // persist the comments on server
-        console.log(this.state.comment.message);
-        console.log(this.state.issue_id);
+        //console.log(this.state.comment.message);
+        //console.log(this.state.issue_id);
         commentService.post( this.state.issue_id ,this.state.comment.message)
             .then( () => {
                     this.props.actualizar();
@@ -106,7 +97,7 @@ export default class CommentForm extends Component {
             <React.Fragment>
                 <form method="post" onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <img style={img} src={this.state.CU_avatar} alt="avatar" />
+                        <img className='avatarPost' style={img} src={this.state.CU_avatar} alt="avatar" />
                         <textarea
                             onChange={this.handleFieldChange}
                             value={this.state.comment.message}
@@ -126,3 +117,5 @@ export default class CommentForm extends Component {
         );
     }
 }
+
+export default CommentForm;

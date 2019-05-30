@@ -30,7 +30,7 @@ const ButtonStyle = {
     marginBottom: '0px',
     marginLeft: '10px',
     marginRight: '10px',
-}
+};
 
 const IssueDescStyle = {
     fontSize: '15px',
@@ -126,6 +126,9 @@ class Issue extends Component {
     }
 
     actualiza(){
+        //console.log("holaa");
+        this.setState({comments: [] });
+        this.GetData();
         this.GetComments();
     }
 
@@ -187,13 +190,13 @@ class Issue extends Component {
                                   direction="column"
                                   justify="flex-end"
                                   alignItems="center" >
-                            <StatusSelector id={this.state.id}/>
+                            <StatusSelector id={this.state.id} actualizar={this.actualiza}/>
                             </Grid>
                             <Grid container
                                   direction="column" //igual es mejor poner row como estaba antes
                                   justify="flex-end"
                                   alignItems="center" >
-                                <IssueCard id={this.state.id}/>
+                                <IssueCard id={this.state.id} status={this.state.status}/>
                                 <td colspan="2" valign="middle" align="center">
                                     <Button style={ButtonStyle} variant="contained" color="primary"onClick={ () => this.editIssue()} size="small"> EDIT </Button>
                                     <Button style={ButtonStyle} variant="contained" color="secondary" onClick={ () => this.deleteIssue()} size="small"> DELETE </Button>
