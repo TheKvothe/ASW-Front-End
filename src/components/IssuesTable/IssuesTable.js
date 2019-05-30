@@ -40,11 +40,11 @@ const button = {
 
 let counter = 0;
 
-function createData(title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar) {
+function createData(title, type, status, priority, issueID, votes, assignee_id, created, updated) {
     counter += 1;
     created = created.substring(0, 10);
     updated = updated.substring(0, 10);
-    return { id: issueID, title, type, status, priority, issueID, votes, assignee, created, updated, assignee_avatar};
+    return { id: issueID, title, type, status, priority, issueID, votes, assignee_id, created, updated};
 }
 
 function desc(a, b, orderBy) {
@@ -218,6 +218,9 @@ class EnhancedTable extends React.Component {
             data: [],
             page: 0,
             rowsPerPage: 5,
+
+            assignee_avatar: "",
+            assignee_name: ""
         }
     };
 
@@ -238,30 +241,48 @@ class EnhancedTable extends React.Component {
         }
         else if(filtro == 'watching') {
             issues = issueService.getWatching();
+            /*
+            console.log(issues);
+            issues.then(function(result) {
+                console.log(result) // "Some User token"
+            })
+            */
         }
-            issues.then( datos => {
+        issues.then( datos => {
+            console.log(datos);
+            console.log(datos.length);
             let data = [];
             datos.forEach( issue => {
                 let votes = 0;
                 if (issue.votes != null) {
                     votes=issue.votes;
                 }
-                let assignee_avatar;
-                let assignee_name;
+
+                /*
+                let assignee_avatar = "";
+                let assignee_name = "";
+                console.log(issue.assignee_id);
                 if (issue.assignee_id != null){
                     userService.getByID(issue.assignee_id)
-                        .then ( user => {
-                            console.log(data);
-                            assignee_name = user.name;
-                            assignee_avatar =  user.foto;
-                            data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar))
+                        .then ( res => {
+                            //this.setState({assignee_name: res.name, assignee_avatar: res.foto});
+                            assignee_name = res.name;
+                            assignee_avatar = res.foto;
+                            //console.log(assignee_name);
+                            //console.log(assignee_avatar);
+                            //data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, assignee_name,issue.created_at,issue.updated_at, assignee_avatar));
+                        })
+                        .catch(error => {
+                            console.log(error);
                         });
                 }
-                else{
-                    data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, '',issue.created_at,issue.updated_at, ''))
-                }
-
+                */
+                //console.log(this.state.assignee_name);
+                //console.log(this.state.assignee_avatar);
+                data.push(createData(issue.title, issue.type_issue, issue.status, issue.priority, issue.id, votes, issue.assignee_id,issue.created_at,issue.updated_at));
             });
+            console.log(data);
+            console.log(data.length);
             this.setState({data});
         });
     };
@@ -289,6 +310,15 @@ class EnhancedTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
+    getUserInfo(id) {
+        userService.getByID(id)
+            .then ( data => {
+                this.setState({assignee_name: data.name, assignee_avatar: data.foto});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
     render() {
         const {classes} = this.props;
@@ -315,6 +345,11 @@ class EnhancedTable extends React.Component {
                                 {stableSort(data, getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(n => {
+                                        /*
+                                        if (n.assignee_id != null) {
+                                            this.getUserInfo(n.assignee_id);
+                                        }
+                                        */
                                         return (
                                             <TableRow
                                                 hover
@@ -330,7 +365,7 @@ class EnhancedTable extends React.Component {
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/' + n.priority + '.svg'} alt={n.priority}/></TableCell>
                                                 <TableCell>{n.status}</TableCell>
                                                 <TableCell>{n.votes}</TableCell>
-                                                <TableCell><img className='avatar' style={img} src={n.assignee_avatar} />{n.assignee}</TableCell>
+                                                <TableCell><img className='avatar' style={img}  src={this.state.assignee_avatar} />{this.state.assignee_name}</TableCell>
                                                 <TableCell>{n.created}</TableCell>
                                                 <TableCell>{n.updated}</TableCell>
                                                 <TableCell><img src={process.env.PUBLIC_URL + '/iconos/not-watching.svg'} alt={'NOT-Watch'}/></TableCell>

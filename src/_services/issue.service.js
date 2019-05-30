@@ -68,13 +68,13 @@ function getMyIssues() {
         .then(handleResponse)
 }
 
-function getWatching() {
+async function getWatching() {
     let requestOptionsWatching = {
         headers: authHeader(),
         params: {
             watching: 'watching'
         }};
-    return axios.get(URI + '/issues',requestOptionsWatching)
+    return await axios.get(URI + '/issues',requestOptionsWatching)
         .then(handleResponse)
 }
 
